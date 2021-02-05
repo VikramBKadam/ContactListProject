@@ -48,8 +48,9 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
         }
     };
 
-    public UserListAdapter(){
+    public UserListAdapter(ItemClickListener itemClickListener){
         super(DIFF__CALLBACK);
+        this.itemClickListener = itemClickListener;
     }
 
 

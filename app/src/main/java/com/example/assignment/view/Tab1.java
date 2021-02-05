@@ -48,7 +48,7 @@ public class Tab1 extends Fragment implements ItemClickListener{
     ArrayList<User> deleteUserList = new ArrayList<>();
 
 
-    private UserListAdapter userListAdapter = new UserListAdapter();
+    private UserListAdapter userListAdapter = new UserListAdapter(this);
 
 
     public static Tab1 newInstance() {
@@ -192,6 +192,7 @@ public class Tab1 extends Fragment implements ItemClickListener{
 
     @Override
     public void onItemClicked(View view, User user) {
+        Log.d("TAG",String.valueOf(multiSelectStatus));
         if (multiSelectStatus) {
             if (!deleteUserList.contains(user)) {
                 view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_200));
