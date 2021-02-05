@@ -10,10 +10,13 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 import com.example.assignment.model.User;
 import com.example.assignment.model.UserDao;
 import com.example.assignment.model.UserDatabase;
+import com.example.assignment.repository.LocalRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +32,11 @@ import io.reactivex.subjects.PublishSubject;
 public class Tab1ViewModel extends AndroidViewModel {
 
 
+    public LiveData<PagedList<User>> userList ;
     public MutableLiveData<List<User>> users = new MutableLiveData<>();
     public MutableLiveData<User> user = new MutableLiveData<>();
+    private LocalRepository repository = new LocalRepository(getApplication());
+    public LiveData<PagedList<User>> queriedUserList;
 
     public static MutableLiveData<String> queryString = new MutableLiveData<>();
     public static void setQueryString(String query) {
@@ -39,8 +45,6 @@ public class Tab1ViewModel extends AndroidViewModel {
     public LiveData<String> getQueryString() {
         return queryString;
     }
-
-    UserDao dao = UserDatabase.getInstance(getApplication()).userDao();
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -52,33 +56,20 @@ public class Tab1ViewModel extends AndroidViewModel {
         fetchDataFromDatabase();
     }
 
-    private void fetchDataFromDatabase() {
+    public void fetchDataFromDatabase() {
+        PagedList.Config config = (new PagedList.Config.Builder())
+                .setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(10)
+                .setPageSize(10)
+                .build();
 
-        dao.getAllUser().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<User>>() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+        userList = new LivePagedListBuilder<>(repository.getAllUsers(),config).build();
 
-                    }
-
-                    @Override
-                    public void onSuccess(@io.reactivex.annotations.NonNull List<User> usersList) {
-                        Log.e("TAG", "onSuccess: fetch all user list"+usersList.size() );
-                        users.setValue(usersList);
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                        e.printStackTrace();
-
-                    }
-                });
     }
 
 
     public void saveToDatabase(User user){
-        dao.insert(user).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+        repository.insert(user).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
             }
@@ -98,7 +89,7 @@ public class Tab1ViewModel extends AndroidViewModel {
 
     }
     public void fetchDetailsFromDatabase(int id){
-        dao.getUserById(id).subscribeOn(Schedulers.io())
+        repository.getUserById(id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<User>() {
             @Override
@@ -122,7 +113,7 @@ public class Tab1ViewModel extends AndroidViewModel {
     }
 
    public void deleteUserFromDatabase(int id){
-        dao.deleteUser(id).subscribeOn(Schedulers.io())
+        repository.deleteUser(id).subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
@@ -144,7 +135,7 @@ public class Tab1ViewModel extends AndroidViewModel {
     }
 
     public void updateUser(String u_name,String u_bday,String u_phonenumber,int Id){
-        dao.updateUserById(u_name, u_bday,u_phonenumber, Id).subscribeOn(Schedulers.io())
+        repository.updateUserById(u_name, u_bday,u_phonenumber, Id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
@@ -164,15 +155,22 @@ public class Tab1ViewModel extends AndroidViewModel {
                     }
                 });
     }
-    public LiveData<List<User>> queryAllUser(Context context, String query) {
 
-        return dao.queryAllUser(query);
-    }
 
     public LiveData<List<User>> getUsers() {
         return users;
     }
     public LiveData<User> getUser() {
         return user;
+    }
+
+    public void queryInit(String query) {
+
+        repository = new LocalRepository(getApplication());
+
+        PagedList.Config config = (new PagedList.Config.Builder()).setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(10)
+                .setPageSize(10).build();
+        queriedUserList = new LivePagedListBuilder<>(repository.queryAllUser(query), config).build();
     }
 }

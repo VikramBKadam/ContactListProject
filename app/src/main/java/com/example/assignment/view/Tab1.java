@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,6 +42,7 @@ public class Tab1 extends Fragment {
     RecyclerView UserList;
     ArrayList<User> queryArrayList = new ArrayList<>();
 
+
     private UserListAdapter userListAdapter = new UserListAdapter();
 
 
@@ -62,7 +64,7 @@ public class Tab1 extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel= ViewModelProviders.of(getActivity()).get(Tab1ViewModel.class);
-        mViewModel.refresh();
+        mViewModel.fetchDataFromDatabase();
 
         UserList.setLayoutManager(new LinearLayoutManager(getContext()));
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(UserList);
@@ -86,13 +88,12 @@ public class Tab1 extends Fragment {
     private void queryChatList(String query) {
         query = "%" + query + "%";
 
+        mViewModel.queryInit(query);
 
-        mViewModel.queryAllUser(getContext(), query).observe(this, new Observer<List<User>>() {
+        mViewModel.queriedUserList.observe(this, new Observer<PagedList<User>>() {
             @Override
-            public void onChanged(List<User> users) {
-                queryArrayList.clear();
-                queryArrayList = (ArrayList<User>) users;
-                userListAdapter.updateUserList(queryArrayList);
+            public void onChanged(PagedList<User> users) {
+                userListAdapter.submitList(users);
             }
         });
     }
@@ -115,12 +116,13 @@ public class Tab1 extends Fragment {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             userListAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
-
-            mViewModel.getUsers().observe(getActivity(), users -> {
+            mViewModel.userList.observe(getActivity(), users -> {
                 if(users != null  && users.size() > 0 ) {
-                    storeUser(users);
-                }
+                    storeUser(users);}
             });
+
+
+
             User user=userList.get(viewHolder.getAdapterPosition());
 
 
@@ -167,13 +169,7 @@ public class Tab1 extends Fragment {
 
 
     private void observeUsersDataList() {
-        mViewModel.getUsers().observe(this, users -> {
-            if(users != null  && users.size() > 0 ) {
-                Log.e("TAG", "observeUsersDataList:  users size"+users.size() );
-                userListAdapter.updateUserList(users);
-
-            }
-        });
+       mViewModel.userList.observe(this, users -> userListAdapter.submitList(users));
 
     }
 }

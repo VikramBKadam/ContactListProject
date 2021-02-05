@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.DiffUtil.ItemCallback;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.assignment.R;
@@ -27,21 +30,28 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyViewHolder>  {
+public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyViewHolder>  {
     private ArrayList<User> userList;
     static String id;
 
 
-    public UserListAdapter() {
+    public static ItemCallback<User> DIFF__CALLBACK = new ItemCallback<User>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull User oldItem, @NonNull User newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
 
+        @Override
+        public boolean areContentsTheSame(@NonNull User oldItem, @NonNull User newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
 
+    public UserListAdapter(){
+        super(DIFF__CALLBACK);
     }
 
-    public void updateUserList(List<User> newUserList) {
-        userList = new ArrayList<>();
-        userList.addAll(newUserList);
-        notifyDataSetChanged();
-    }
+
 
     @NonNull
     @Override
@@ -52,7 +62,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        User user = userList.get(position);
+        User user = getItem(position);
         if(user != null){
             holder.userName.setText(user.getName());
         }
@@ -61,13 +71,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
         holder.userImage.setImageURI(Uri.parse(user.getImage()));
 
     }
-
-    @Override
-    public int getItemCount() {
-        return userList == null ? 0: userList.size();
-    }
-
-
 
 
     class MyViewHolder extends RecyclerView.ViewHolder {

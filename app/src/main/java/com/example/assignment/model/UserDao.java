@@ -1,6 +1,7 @@
 package com.example.assignment.model;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -17,7 +18,7 @@ public interface UserDao {
 
 
     @Query("SELECT * FROM User")
-    Single<List<User>> getAllUser();
+    DataSource.Factory<Integer,User> getAllUser();
 
     @Query("Delete From User")
     Completable deleteAllUsers();
@@ -33,6 +34,8 @@ public interface UserDao {
 
     Single<User> getUserById(int Id);
 
-    @Query("SELECT * From User where name like :query ")
-    LiveData<List<User>> queryAllUser(String query);
+    @Query("select * from User where name like :query or phoneNumber like :query")
+    DataSource.Factory<Integer, User> queryAllUser(String query);
+
+
 }
