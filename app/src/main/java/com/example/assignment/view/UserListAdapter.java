@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 
 public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyViewHolder>  {
     private ArrayList<User> userList;
+    ItemClickListener itemClickListener;
     static String id;
 
 
@@ -73,7 +74,7 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
     }
 
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         @BindView(R.id.name_user)
         TextView userName;
@@ -84,9 +85,12 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+
+            itemView.setOnLongClickListener(this);
            Context item_view_context=itemView.getContext();
 
-           itemView.setOnLongClickListener(new View.OnLongClickListener() {
+          /* itemView.setOnLongClickListener(new View.OnLongClickListener() {
                @Override
                public boolean onLongClick(View v) {
                    checkbox.setVisibility(View.VISIBLE);
@@ -94,9 +98,9 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
 
                    return true;
                }
-           });
+           });*/
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+           /* itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int clickPosition = getAdapterPosition();
@@ -110,9 +114,25 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
                     item_view_context.startActivity(intent);
 
                 }
-            });
+            });*/
 
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d("TAG", "onClick in adapter called: " + v.getId());
+            if (itemClickListener != null)
+                itemClickListener.onItemClicked(v, getItem(getAdapterPosition()));
+
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            Log.d("TAG", "onLongClick boolean called: " + v.getId());
+            if (itemClickListener != null)
+                itemClickListener.onItemLongClicked(v, getItem(getAdapterPosition()), getAdapterPosition());
+            return true;
         }
     }
 

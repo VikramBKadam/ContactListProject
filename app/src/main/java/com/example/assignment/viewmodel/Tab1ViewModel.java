@@ -155,6 +155,16 @@ public class Tab1ViewModel extends AndroidViewModel {
                     }
                 });
     }
+    private static MutableLiveData<Boolean> isMultiSelectOn = new MutableLiveData<>();
+
+    public void setIsMultiSelect(boolean isMultiSelect) {
+        isMultiSelectOn.setValue(isMultiSelect);
+    }
+
+    public static LiveData<Boolean> getIsMultiSelectOn() {
+        return isMultiSelectOn;
+    }
+
 
 
     public LiveData<List<User>> getUsers() {

@@ -1,6 +1,7 @@
 package com.example.assignment.view;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,12 +37,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class Tab1 extends Fragment {
+public class Tab1 extends Fragment implements ItemClickListener{
 
     private Tab1ViewModel mViewModel;
     @BindView(R.id.user_recycler_view)
     RecyclerView UserList;
     ArrayList<User> queryArrayList = new ArrayList<>();
+    boolean multiSelectStatus = false;
+
+    ArrayList<User> deleteUserList = new ArrayList<>();
 
 
     private UserListAdapter userListAdapter = new UserListAdapter();
@@ -55,6 +60,7 @@ public class Tab1 extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.tab1_fragment, container, false);
         ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
 
 
         return view;
@@ -72,8 +78,19 @@ public class Tab1 extends Fragment {
         UserList.setAdapter(userListAdapter);
 
         mViewModel = new ViewModelProvider(getActivity()).get(Tab1ViewModel.class);
+
         observeQueryString();
         observeUsersDataList();
+        observeMultiSelectStatus();
+    }
+
+    private void observeMultiSelectStatus() {
+        mViewModel.getIsMultiSelectOn().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                multiSelectStatus = aBoolean;
+            }
+        });
     }
     private void observeQueryString() {
         mViewModel.getQueryString().observe(this, new Observer<String>() {
@@ -123,7 +140,7 @@ public class Tab1 extends Fragment {
 
 
 
-            User user=userList.get(viewHolder.getAdapterPosition());
+           // User user=userList.get(viewHolder.getAdapterPosition());
 
 
                 final CharSequence[] options = { "View Details", "Edit","Delete","Cancel"};
@@ -138,17 +155,17 @@ public class Tab1 extends Fragment {
 
                         if (options[item].equals("View Details")) {
                             Intent intent =new Intent(getActivity(),DetailActivity.class);
-                            intent.putExtra("ID",String.valueOf(user.getId()));
+                            intent.putExtra("ID",String.valueOf(userList.get(viewHolder.getAdapterPosition()).getId()));
                             getActivity().startActivity(intent);
 
 
                         } else if (options[item].equals("Edit")) {
                             Intent intent =new Intent(getActivity(),EditActivity.class);
-                            intent.putExtra("ID",String.valueOf(user.getId()));
+                            intent.putExtra("ID",String.valueOf(userList.get(viewHolder.getAdapterPosition()).getId()));
                             getActivity().startActivity(intent);
 
                         } else if(options[item].equals("Delete")){
-                            mViewModel.deleteUserFromDatabase(user.getId());
+                            mViewModel.deleteUserFromDatabase(userList.get(viewHolder.getAdapterPosition()).getId());
 
                         } else if (options[item].equals("Cancel")) {
                             dialog.dismiss();
@@ -171,5 +188,66 @@ public class Tab1 extends Fragment {
     private void observeUsersDataList() {
        mViewModel.userList.observe(this, users -> userListAdapter.submitList(users));
 
+    }
+
+    @Override
+    public void onItemClicked(View view, User user) {
+        if (multiSelectStatus) {
+            if (!deleteUserList.contains(user)) {
+                view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_200));
+                deleteUserList.add(user);
+            } else {
+                deleteUserList.remove(user);
+                view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_500));
+            }
+
+        } else {
+            Intent intent =new Intent(getActivity(),EditActivity.class);
+            intent.putExtra("ID",String.valueOf(user.getId()));
+            getActivity().startActivity(intent);
+
+        }
+
+//        switch (view.getId()) {
+//            case R.id.button_delete:
+//                fragmentViewModel.deleteUser(user);
+//                break;
+//            case R.id.button_edit:
+//                Intent intentEditUserInfoActivity = new Intent(getContext(), EditUserInfoActivity.class);
+//                intentEditUserInfoActivity.putExtra("User", user);
+//                startActivity(intentEditUserInfoActivity);
+//                break;
+//            default:
+
+
+        Log.d("TAG", "Default intent called");
+//        Intent intentDetailedUserInfoActivity = new Intent(getContext(), DetailedUserInfoActivity.class);
+//        intentDetailedUserInfoActivity.putExtra("User", user);
+//        startActivity(intentDetailedUserInfoActivity);
+//                break;
+
+    }
+
+    @Override
+    public void onItemLongClicked(View view, User user, int index) {
+        view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_200));
+        deleteUserList.add(user);
+        Log.d("TAG", "LongItemClick: " + index);
+        mViewModel.setIsMultiSelect(true);
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == R.id.multi_select_delete_menu) {
+
+            for (User user :deleteUserList) {
+                mViewModel.deleteUserFromDatabase(user.getId());
+            }
+
+            deleteUserList.clear();
+            mViewModel.setIsMultiSelect(false);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
