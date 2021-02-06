@@ -5,22 +5,18 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import android.provider.MediaStore;
@@ -39,9 +35,7 @@ import com.example.assignment.R;
 import com.example.assignment.helper.UriFromBitmap;
 import com.example.assignment.model.User;
 import com.example.assignment.viewmodel.Tab1ViewModel;
-import com.example.assignment.viewmodel.Tab2ViewModel;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -218,21 +212,21 @@ public class Tab2 extends Fragment {
 
                         cameraImageUri = uriFromBitmap.getImageUri(getContext(),bitmapCameraImage);
                         Log.d("TAG", "cameraUri: " + cameraImageUri.toString());
-                        Log.d("TAG", "cameraUri: " + cameraImageUri.getPath());
+                      //  Log.d("TAG", "cameraUri: " + cameraImageUri.getPath());
 
                     } catch (Exception e) {
                         Log.d("TAG", "Inside catch: " + e.getMessage());
                         e.printStackTrace();
                     }
                     userImage.setImageURI(cameraImageUri);
-                    ProfilePicPath = cameraImageUri.getPath();
+                  //  ProfilePicPath = cameraImageUri.getPath();
                     ProfilePicUri=cameraImageUri.toString();
                     break;
 
                 case REQUEST_CODE_GALLERY:
                     Uri selectedImageUri = data.getData();
-                    Log.d("TAG", "URi: " + selectedImageUri.getPath());
-                    ProfilePicPath = selectedImageUri.getPath();
+                   // Log.d("TAG", "URi: " + selectedImageUri.getPath());
+                 //   ProfilePicPath = selectedImageUri.getPath();
                     ProfilePicUri=selectedImageUri.toString();
                     userImage.setImageURI(selectedImageUri);
                     break;

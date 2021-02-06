@@ -25,6 +25,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.assignment.R;
 import com.example.assignment.model.User;
@@ -76,6 +78,7 @@ public class Tab1 extends Fragment implements ItemClickListener{
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(UserList);
 
         UserList.setAdapter(userListAdapter);
+        mViewModel.setIsMultiSelect(false);
 
         mViewModel = new ViewModelProvider(getActivity()).get(Tab1ViewModel.class);
 
@@ -135,14 +138,13 @@ public class Tab1 extends Fragment implements ItemClickListener{
             userListAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
             mViewModel.userList.observe(getActivity(), users -> {
                 if(users != null  && users.size() > 0 ) {
+                   // userList=new ArrayList<>();
+                  //  userList.addAll(users);
                     storeUser(users);}
             });
 
-
-
-           // User user=userList.get(viewHolder.getAdapterPosition());
-
-
+            if( userList!=null){
+                User user=userList.get(viewHolder.getAdapterPosition());
                 final CharSequence[] options = { "View Details", "Edit","Delete","Cancel"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -155,17 +157,18 @@ public class Tab1 extends Fragment implements ItemClickListener{
 
                         if (options[item].equals("View Details")) {
                             Intent intent =new Intent(getActivity(),DetailActivity.class);
-                            intent.putExtra("ID",String.valueOf(userList.get(viewHolder.getAdapterPosition()).getId()));
+
+                            intent.putExtra("ID",String.valueOf(user.getId()));
                             getActivity().startActivity(intent);
 
 
                         } else if (options[item].equals("Edit")) {
                             Intent intent =new Intent(getActivity(),EditActivity.class);
-                            intent.putExtra("ID",String.valueOf(userList.get(viewHolder.getAdapterPosition()).getId()));
+                            intent.putExtra("ID",String.valueOf(user.getId()));
                             getActivity().startActivity(intent);
 
                         } else if(options[item].equals("Delete")){
-                            mViewModel.deleteUserFromDatabase(userList.get(viewHolder.getAdapterPosition()).getId());
+                            mViewModel.deleteUserFromDatabase(user.getId());
 
                         } else if (options[item].equals("Cancel")) {
                             dialog.dismiss();
@@ -173,6 +176,10 @@ public class Tab1 extends Fragment implements ItemClickListener{
                     }
                 });
                 builder.show();
+            }
+
+
+
             }
 
         private void storeUser(List<User> users) {
@@ -193,13 +200,16 @@ public class Tab1 extends Fragment implements ItemClickListener{
     @Override
     public void onItemClicked(View view, User user) {
         Log.d("TAG",String.valueOf(multiSelectStatus));
+        ImageView imageView;
+
         if (multiSelectStatus) {
             if (!deleteUserList.contains(user)) {
-                view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_200));
+
+                view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_500));
                 deleteUserList.add(user);
             } else {
                 deleteUserList.remove(user);
-                view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_500));
+                view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_200));
             }
 
         } else {
@@ -209,29 +219,12 @@ public class Tab1 extends Fragment implements ItemClickListener{
 
         }
 
-//        switch (view.getId()) {
-//            case R.id.button_delete:
-//                fragmentViewModel.deleteUser(user);
-//                break;
-//            case R.id.button_edit:
-//                Intent intentEditUserInfoActivity = new Intent(getContext(), EditUserInfoActivity.class);
-//                intentEditUserInfoActivity.putExtra("User", user);
-//                startActivity(intentEditUserInfoActivity);
-//                break;
-//            default:
-
-
-        Log.d("TAG", "Default intent called");
-//        Intent intentDetailedUserInfoActivity = new Intent(getContext(), DetailedUserInfoActivity.class);
-//        intentDetailedUserInfoActivity.putExtra("User", user);
-//        startActivity(intentDetailedUserInfoActivity);
-//                break;
 
     }
 
     @Override
     public void onItemLongClicked(View view, User user, int index) {
-        view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_200));
+        view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_500));
         deleteUserList.add(user);
         Log.d("TAG", "LongItemClick: " + index);
         mViewModel.setIsMultiSelect(true);

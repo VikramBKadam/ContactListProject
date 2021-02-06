@@ -67,17 +67,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 menu.clear();
+
                 if (aBoolean)
                     inflater.inflate(R.menu.multi_select_delete, menu);
                 else
                     inflater.inflate(R.menu.menu_search, menu);
+
             }
         });
 
-    //    setMenu(menu,inflater);
 
-
-      //  inflater.inflate(R.menu.menu_search,menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -107,38 +106,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-       /* Toast.makeText(this, "Search Clicked", Toast.LENGTH_SHORT).show();
-        SearchView searchView =(SearchView)item.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-               Tab1ViewModel.setQueryString(query);
 
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-               Tab1ViewModel.setQueryString(newText);
-
-
-                return false;
-            }
-        });*/
-
-        /*private void setMenu(MenuInflater inflater, Menu menu) {
-            Tab1ViewModel.getIsMultiSelectOn().observe(this, new Observer<Boolean>() {
-                @Override
-                public void onChanged(Boolean aBoolean) {
-                    menu.clear();
-                    if (aBoolean)
-                        inflater.inflate(R.menu.multi_select_menu, menu);
-                    else
-                        inflater.inflate(R.menu.menu, menu);
-                }
-            });
-        }*/
 
         return super.onOptionsItemSelected(item);
     }
