@@ -68,8 +68,8 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
         if(user != null){
             holder.userName.setText(user.getName());
         }
-        Log.d("image r",String.valueOf(user.getImage()));
-        Log.d("image o",String.valueOf(R.drawable.ic_baseline_person_24));
+       /* Log.d("image r",String.valueOf(user.getImage()));
+        Log.d("image o",String.valueOf(R.drawable.ic_baseline_person_24));*/
         holder.userImage.setImageURI(Uri.parse(user.getImage()));
 
     }
@@ -89,34 +89,6 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
             itemView.setOnClickListener(this);
 
             itemView.setOnLongClickListener(this);
-           Context item_view_context=itemView.getContext();
-
-          /* itemView.setOnLongClickListener(new View.OnLongClickListener() {
-               @Override
-               public boolean onLongClick(View v) {
-                   checkbox.setVisibility(View.VISIBLE);
-
-
-                   return true;
-               }
-           });*/
-
-           /* itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int clickPosition = getAdapterPosition();
-                    User user = userList.get(clickPosition);
-                    Intent intent =new Intent(item_view_context,DetailActivity.class);
-
-                     id =String.valueOf(user.getId());
-
-                    intent.putExtra("ID",id);
-                    // Log.d("abc",id);
-                    item_view_context.startActivity(intent);
-
-                }
-            });*/
-
 
         }
 
