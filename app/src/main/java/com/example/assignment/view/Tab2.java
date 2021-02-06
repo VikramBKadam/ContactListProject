@@ -66,7 +66,7 @@ public class Tab2 extends Fragment {
     Button addProfilePic;
 
     String ProfilePicPath;
-    String ProfilePicUri;
+    String ProfilePicUri ;
 
     private final int REQUEST_CODE_CAMERA = 0;
     private final int REQUEST_CODE_GALLERY = 1;
@@ -83,8 +83,6 @@ public class Tab2 extends Fragment {
         ButterKnife.bind(this, view);
          uriFromBitmap =new UriFromBitmap();
 
-
-        //EditText userName=view.findViewById(R.id.name_user);
         datePick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,21 +204,24 @@ public class Tab2 extends Fragment {
             switch (requestCode) {
                 case REQUEST_CODE_CAMERA:
                     Bitmap bitmapCameraImage = (Bitmap) data.getExtras().get("data");
-                    Uri cameraImageUri = null;
+                    Uri cameraImageUri ;
                     try {
                         Log.d("TAG", "Inside try of onActivity result of Tab2Fragment");
+
 
                         cameraImageUri = uriFromBitmap.getImageUri(getContext(),bitmapCameraImage);
                         Log.d("TAG", "cameraUri: " + cameraImageUri.toString());
                       //  Log.d("TAG", "cameraUri: " + cameraImageUri.getPath());
+                        userImage.setImageURI(cameraImageUri);
+                        //  ProfilePicPath = cameraImageUri.getPath();
+
+                        ProfilePicUri=cameraImageUri.toString();
 
                     } catch (Exception e) {
                         Log.d("TAG", "Inside catch: " + e.getMessage());
                         e.printStackTrace();
                     }
-                    userImage.setImageURI(cameraImageUri);
-                  //  ProfilePicPath = cameraImageUri.getPath();
-                    ProfilePicUri=cameraImageUri.toString();
+
                     break;
 
                 case REQUEST_CODE_GALLERY:

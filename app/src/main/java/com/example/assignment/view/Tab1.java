@@ -200,7 +200,6 @@ public class Tab1 extends Fragment implements ItemClickListener{
     @Override
     public void onItemClicked(View view, User user) {
         Log.d("TAG",String.valueOf(multiSelectStatus));
-        ImageView imageView;
 
         if (multiSelectStatus) {
             if (!deleteUserList.contains(user)) {
@@ -208,8 +207,12 @@ public class Tab1 extends Fragment implements ItemClickListener{
                 view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_500));
                 deleteUserList.add(user);
             } else {
+
                 deleteUserList.remove(user);
                 view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_200));
+                if(deleteUserList.size()==0){
+                    mViewModel.setIsMultiSelect(false);
+                }
             }
 
         } else {
