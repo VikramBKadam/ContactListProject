@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.assignment.R;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
@@ -64,7 +65,10 @@ public class DetailActivity extends AppCompatActivity {
         id=getIntent().getStringExtra("ID");
         viewModel.fetchDetailsFromDatabase(Integer.parseInt(id));
         viewModel.getUser().observe(this,user -> {
-            imageView.setImageURI(Uri.parse(user.getImage()));
+            Glide.with(this).load(Uri.parse(user.getImage()))
+                    .placeholder(R.drawable.ic_baseline_person_24)
+                    .into(imageView);
+           // imageView.setImageURI(Uri.parse(user.getImage()));
             textViewName.setText("Name: "+user.getName());
             textViewPhone.setText("Mobile: "+user.getPhoneNumber());
             textViewBirthday.setText("BirthDate: "+user.getBirthday());

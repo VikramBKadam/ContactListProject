@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.DiffUtil.ItemCallback;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.assignment.R;
 import com.example.assignment.model.User;
 
@@ -70,7 +71,16 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
         }
        /* Log.d("image r",String.valueOf(user.getImage()));
         Log.d("image o",String.valueOf(R.drawable.ic_baseline_person_24));*/
-        holder.userImage.setImageURI(Uri.parse(user.getImage()));
+        if (user.getImage()!= null){
+        Glide.with(holder.itemView.getContext())
+                .load(Uri.parse(user.getImage()))
+                .placeholder(R.drawable.ic_baseline_person_24)
+                .into(holder.userImage);}
+        /*if (user.getImage()!= null){
+            holder.userImage.setImageURI(Uri.parse(user.getImage()));*/
+
+        else holder.userImage.setImageResource(R.drawable.ic_baseline_person_24);
+
 
     }
 

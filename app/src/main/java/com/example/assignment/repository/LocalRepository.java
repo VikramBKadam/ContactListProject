@@ -25,8 +25,8 @@ public class LocalRepository {
         return userDao.deleteUser(id);
     }
 
-    public Completable updateUserById(String u_name,String u_bday,String u_phonenumber,int Id){
-        return userDao.updateUserById( u_name,u_bday,u_phonenumber, Id);
+    public Completable updateUserById(String u_name,String u_bday,String u_phonenumber,String image,int Id){
+        return userDao.updateUserById( u_name,u_bday,u_phonenumber,image, Id);
     }
 
 

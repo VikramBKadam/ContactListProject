@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.assignment.R;
+import com.example.assignment.helper.SaveBitmap;
 import com.example.assignment.helper.UriFromBitmap;
 import com.example.assignment.model.User;
 import com.example.assignment.viewmodel.Tab1ViewModel;
@@ -71,6 +72,7 @@ public class Tab2 extends Fragment {
     private final int REQUEST_CODE_CAMERA = 0;
     private final int REQUEST_CODE_GALLERY = 1;
     UriFromBitmap uriFromBitmap;
+    SaveBitmap saveBitmap;
 
     public static Tab2 newInstance() {
         return new Tab2();
@@ -208,8 +210,9 @@ public class Tab2 extends Fragment {
                     try {
                         Log.d("TAG", "Inside try of onActivity result of Tab2Fragment");
 
+                        cameraImageUri=SaveBitmap.saveBitmapReturnUri(bitmapCameraImage);
 
-                        cameraImageUri = uriFromBitmap.getImageUri(getContext(),bitmapCameraImage);
+                     //   cameraImageUri = uriFromBitmap.getImageUri(getContext(),bitmapCameraImage);
                         Log.d("TAG", "cameraUri: " + cameraImageUri.toString());
                       //  Log.d("TAG", "cameraUri: " + cameraImageUri.getPath());
                         userImage.setImageURI(cameraImageUri);

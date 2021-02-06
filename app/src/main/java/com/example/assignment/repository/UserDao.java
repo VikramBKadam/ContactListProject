@@ -28,8 +28,8 @@ public interface UserDao {
     @Query("DELETE  FROM User  WHERE id = :Id")
     Completable deleteUser(int Id);
 
-    @Query("UPDATE User SET name=:u_name,birthday=:u_bday,phoneNumber =:u_phonenumber WHERE id = :Id ")
-    Completable  updateUserById(String u_name,String u_bday,String u_phonenumber,int Id);
+    @Query("UPDATE User SET name=:u_name,birthday=:u_bday,phoneNumber =:u_phonenumber,image=:image WHERE id = :Id ")
+    Completable  updateUserById(String u_name,String u_bday,String u_phonenumber,String image,int Id);
 
 
     @Query("SELECT * FROM User WHERE id = :Id")
