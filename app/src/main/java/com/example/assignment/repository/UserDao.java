@@ -36,6 +36,8 @@ public interface UserDao {
 
     Single<User> getUserById(int Id);
 
+    
+
     @Query("select * from User where name like :query or phoneNumber like :query")
     DataSource.Factory<Integer, User> queryAllUser(String query);
 
