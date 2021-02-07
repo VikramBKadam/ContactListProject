@@ -65,9 +65,12 @@ public class DetailActivity extends AppCompatActivity {
         id=getIntent().getStringExtra("ID");
         viewModel.fetchDetailsFromDatabase(Integer.parseInt(id));
         viewModel.getUser().observe(this,user -> {
-            Glide.with(this).load(Uri.parse(user.getImage()))
-                    .placeholder(R.drawable.ic_baseline_person_24)
-                    .into(imageView);
+            if(user.getImage()!=null){
+                Glide.with(this).load(Uri.parse(user.getImage()))
+                        .placeholder(R.drawable.ic_baseline_person_24)
+                        .into(imageView);
+            }else {imageView.setImageResource(R.drawable.ic_baseline_person_24);}
+
            // imageView.setImageURI(Uri.parse(user.getImage()));
             textViewName.setText("Name: "+user.getName());
             textViewPhone.setText("Mobile: "+user.getPhoneNumber());

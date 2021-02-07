@@ -92,9 +92,12 @@ public class EditActivity extends AppCompatActivity {
             textViewName.setText(user.getName());
             textViewPhone.setText(user.getPhoneNumber());
             textViewBirthday.setText(user.getBirthday());
-            Glide.with(this).load(Uri.parse(user.getImage()))
-                    .placeholder(R.drawable.ic_baseline_person_24)
-                    .into(imageView);
+            if(user.getImage()!=null){
+                Glide.with(this).load(Uri.parse(user.getImage()))
+                        .placeholder(R.drawable.ic_baseline_person_24)
+                        .into(imageView);
+            }else {imageView.setImageResource(R.drawable.ic_baseline_person_24);}
+
             /*if(user.getImage()!=null){
                 imageView.setImageURI(Uri.parse(user.getImage()));
 
@@ -135,7 +138,12 @@ public class EditActivity extends AppCompatActivity {
                     String name =textViewName.getText().toString();
                     String phoneNumber =textViewPhone.getText().toString();
                     String birthday =textViewBirthday.getText().toString();
-                    User user =new User(name,phoneNumber,birthday,"uri");
+                   // User user =new User(name,phoneNumber,birthday,"uri");
+                    if (ProfilePicUri==null){
+                        viewModel.getUser().observe(EditActivity.this,user -> {
+                            ProfilePicUri=user.getImage();
+                        });
+                    }
                     viewModel.updateUser(name,birthday,phoneNumber,ProfilePicUri,Integer.parseInt(id));
                    Toast.makeText(EditActivity.this, "Successfully Edited", Toast.LENGTH_SHORT).show();
                     Intent intent =new Intent(EditActivity.this,MainActivity.class);

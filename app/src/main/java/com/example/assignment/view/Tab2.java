@@ -107,16 +107,22 @@ public class Tab2 extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String name = userName.getText().toString();
                 String phoneNumber = userPhoneNumber.getText().toString();
                 String birthday = userBirthDay.getText().toString();
+                if (name.equals("")||phoneNumber.equals("")){
+                    Toast.makeText(getContext(), "Enter Your Details", Toast.LENGTH_SHORT).show();
+                }else {
+                    User user = new User(name, phoneNumber, birthday, ProfilePicUri);
+                    mViewModel.saveToDatabase(user);
+                    Toast.makeText(getContext(), "Successfully Registered", Toast.LENGTH_SHORT).show();
+                    clearFields();
 
-                User user = new User(name, phoneNumber, birthday, ProfilePicUri);
-                mViewModel.saveToDatabase(user);
-                Toast.makeText(getActivity(), "Successfully Resisted", Toast.LENGTH_SHORT).show();
-                clearFields();
+                    changeTab();
+                }
 
-                changeTab();
+
             }
         });
 
@@ -211,7 +217,6 @@ public class Tab2 extends Fragment {
                         Log.d("TAG", "Inside try of onActivity result of Tab2Fragment");
 
                         cameraImageUri=SaveBitmap.saveBitmapReturnUri(bitmapCameraImage);
-
                      //   cameraImageUri = uriFromBitmap.getImageUri(getContext(),bitmapCameraImage);
                         Log.d("TAG", "cameraUri: " + cameraImageUri.toString());
                       //  Log.d("TAG", "cameraUri: " + cameraImageUri.getPath());
