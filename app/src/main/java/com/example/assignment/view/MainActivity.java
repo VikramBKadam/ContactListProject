@@ -7,6 +7,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.assignment.R;
+import com.example.assignment.helper.AndroidContactsChangeListener;
 import com.example.assignment.helper.SyncNativeContacts;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 import com.google.android.material.tabs.TabLayout;
@@ -41,10 +43,15 @@ public class MainActivity extends AppCompatActivity {
     MyFragmentAdapter adapter;
     private final int READ_CONTACT_REQUEST_CODE = 100;
     SyncNativeContacts syncNativeContacts;
+    Tab1ViewModel fragmentViewModel;
 
-    Tab1ViewModel tab1ViewModel;
 
-
+    AndroidContactsChangeListener.IChangeListener contactChangeListener = new AndroidContactsChangeListener.IChangeListener() {
+        @Override
+        public void onContactsChanged() {
+            fragmentViewModel.completeContactSync();
+        }
+    };
 
 
 
@@ -53,7 +60,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragmentViewModel = ViewModelProviders.of(this).get(Tab1ViewModel.class);
         init();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AndroidContactsChangeListener.getInstance(this).startContactsObservation(contactChangeListener);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -92,31 +106,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void syncContacts() {
-         syncNativeContacts = new SyncNativeContacts(this);
-
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                syncNativeContacts.syncNativeContacts();
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
-                        Log.d("TAG", "Inside onSubscribe of syncContacts");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.d("TAG", "Inside onComplete of syncContacts");
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                        Log.d("TAG", "Inside onError of syncContacts. :" + e.getMessage());
-                    }
-                });
+        fragmentViewModel.completeContactSync();
     }
 
     @Override
@@ -181,5 +171,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AndroidContactsChangeListener.getInstance(this).stopContactsObservation();
     }
 }

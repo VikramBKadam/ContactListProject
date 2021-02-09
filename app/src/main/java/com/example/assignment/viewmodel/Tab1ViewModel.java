@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
+import com.example.assignment.helper.SyncNativeContacts;
 import com.example.assignment.model.Contact;
 import com.example.assignment.model.User;
 import com.example.assignment.repository.LocalRepository;
@@ -26,6 +27,8 @@ import io.reactivex.schedulers.Schedulers;
 public class Tab1ViewModel extends AndroidViewModel {
     public LiveData<PagedList<Contact>> contactList;
     public LiveData<PagedList<Contact>> queryContactList;
+    SyncNativeContacts syncNativeContacts;
+    public final static String TAG = "TAG";
 
 
     public LiveData<PagedList<User>> userList ;
@@ -198,5 +201,47 @@ public class Tab1ViewModel extends AndroidViewModel {
         queryContactList = new LivePagedListBuilder<>(repository.getQueryContact(query), config).build();
     }
 
+    public void completeContactSync() {
+        syncNativeContacts = new SyncNativeContacts(getApplication());
+        syncNativeContacts.getContactArrayList().doAfterSuccess(newlist -> addContactListToDB(newlist))
+                .subscribeOn(Schedulers.io())
+                .subscribe(new SingleObserver<List<Contact>>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+                        Log.e(TAG, "onSubscribe: Inside complete sync  "   );
+                    }
 
+                    @Override
+                    public void onSuccess(@io.reactivex.annotations.NonNull List<Contact> contactList) {
+                        Log.e(TAG, "onSuccess: Inside complete sync   -->>  "+contactList.size()   );
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                        Log.e(TAG, "onError: Inside complete sync error ->> "+e.getMessage()   );
+                    }
+                });
+}
+
+
+    private void addContactListToDB(List<Contact> contactList) {
+
+        repository.addListOfContact(contactList)
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+                        Log.d("TAG", "Inside onSubscribe of addContactListDB in SyncNativeContacts");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("TAG", "Inside onComplete of addContactListDB in SyncNativeContacts");
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                        Log.d("TAG", "Inside onError of addContactListDB in SyncNativeContacts.: " + e.getMessage());
+                    }
+                });
+    }
 }
