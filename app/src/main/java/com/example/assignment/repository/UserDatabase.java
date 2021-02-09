@@ -12,13 +12,15 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.assignment.model.Contact;
 import com.example.assignment.model.User;
 
-@Database(entities = {User.class,Contact.class}, version = 1)
+@Database(entities = {User.class,Contact.class}, version = 2)
 public abstract class UserDatabase extends RoomDatabase {
 
     private static UserDatabase instance;
     static Migration migration = new Migration(1,2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("alter table 'user' add 'date' integer ");
           /*  database.execSQL("CREATE TABLE Contacts (id INTEGER, "
                     + "name TEXT,"+"contactNo TEXT , PRIMARY KEY(id))");*/
 
@@ -33,7 +35,7 @@ public abstract class UserDatabase extends RoomDatabase {
                     context.getApplicationContext(),
                     UserDatabase.class,
                     "userdatabase")
-                 //  .addMigrations(migration)
+                   .addMigrations(migration)
                     .build();
         }
         return instance;

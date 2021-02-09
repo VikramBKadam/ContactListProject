@@ -4,7 +4,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
+import com.example.assignment.repository.DateConverter;
+
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -19,12 +23,17 @@ public class User {
     private String  phoneNumber;
     @ColumnInfo
     private String birthday;
+    @TypeConverters(DateConverter.class)
+    private Date date;
 
-    public User(String name, String phoneNumber, String birthday,String image) {
+    public User(String name, String phoneNumber, String birthday,String image,Date date) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.birthday = birthday;
         this.image=image;
+        this.date=date;
+    }
+    public User() {
     }
 
     public int getId() {
@@ -65,6 +74,14 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override

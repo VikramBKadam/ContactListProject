@@ -17,6 +17,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.room.TypeConverters;
 import androidx.viewpager.widget.ViewPager;
 
 import android.provider.MediaStore;
@@ -35,9 +36,11 @@ import com.example.assignment.R;
 import com.example.assignment.helper.SaveBitmap;
 import com.example.assignment.helper.UriFromBitmap;
 import com.example.assignment.model.User;
+import com.example.assignment.repository.DateConverter;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +49,8 @@ import static android.app.Activity.RESULT_CANCELED;
 
 public class Tab2 extends Fragment {
     MyFragmentAdapter myFragmentAdapter;
+
+
     private Tab1ViewModel mViewModel;
     @BindView(R.id.image_view_user)
     ImageView userImage;
@@ -114,7 +119,11 @@ public class Tab2 extends Fragment {
                 if (name.equals("")||phoneNumber.equals("")){
                     Toast.makeText(getContext(), "Enter Your Details", Toast.LENGTH_SHORT).show();
                 }else {
-                    User user = new User(name, phoneNumber, birthday, ProfilePicUri);
+                    User user = new User(name, phoneNumber, birthday, ProfilePicUri,new Date());
+
+
+
+                    Log.d("DATE1",String.valueOf(new Date()));
                     mViewModel.saveToDatabase(user);
                     Toast.makeText(getContext(), "Successfully Registered", Toast.LENGTH_SHORT).show();
                     clearFields();
