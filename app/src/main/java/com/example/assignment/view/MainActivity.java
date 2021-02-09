@@ -1,16 +1,20 @@
 package com.example.assignment.view;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
+import android.Manifest;
+import android.content.ContentResolver;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,18 +22,33 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.assignment.R;
+import com.example.assignment.helper.SyncNativeContacts;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 import com.google.android.material.tabs.TabLayout;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.schedulers.Schedulers;
+
 public class MainActivity extends AppCompatActivity {
+    ContentResolver contentResolver;
 
     TabLayout tabLayout;
     Toolbar toolbar;
     ViewPager viewPager;
     MyFragmentAdapter adapter;
-    Tab1ViewModel tab1ViewModel;
-   // private UserListAdapter userListAdapter = new UserListAdapter();
+    private final int READ_CONTACT_REQUEST_CODE = 100;
+    SyncNativeContacts syncNativeContacts;
 
+    Tab1ViewModel tab1ViewModel;
+
+
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void init() {
 
 
@@ -57,7 +77,59 @@ public class MainActivity extends AppCompatActivity {
         adapter = new MyFragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+        checkPermissionSyncContacts();
+
+
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermissionSyncContacts() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) !=
+                PackageManager.PERMISSION_GRANTED)
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACT_REQUEST_CODE);
+        else
+            syncContacts();
+    }
+
+    private void syncContacts() {
+         syncNativeContacts = new SyncNativeContacts(this);
+
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                syncNativeContacts.syncNativeContacts();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+                        Log.d("TAG", "Inside onSubscribe of syncContacts");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("TAG", "Inside onComplete of syncContacts");
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                        Log.d("TAG", "Inside onError of syncContacts. :" + e.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == READ_CONTACT_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                syncContacts();
+            else
+                Toast.makeText(this, "Contact Sync failed. Please grant contacts permission", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 

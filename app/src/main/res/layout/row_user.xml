@@ -24,16 +24,17 @@
             android:textSize="22sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/checkbox"
+        <TextView
+            android:id="@+id/phone_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-
-            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:visibility="gone"
-            android:src="@drawable/ic_baseline_check_circle_24"/>
+            android:layout_toEndOf="@+id/image_user"
+            android:layout_below="@+id/name_user"
+            android:textSize="22sp"
+            android:text="8605132773"
+
+           />
 
 
     </RelativeLayout>

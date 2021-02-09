@@ -68,16 +68,15 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
         User user = getItem(position);
         if(user != null){
             holder.userName.setText(user.getName());
+            holder.phone.setText(user.getPhoneNumber());
         }
-       /* Log.d("image r",String.valueOf(user.getImage()));
-        Log.d("image o",String.valueOf(R.drawable.ic_baseline_person_24));*/
+
         if (user.getImage()!= null){
         Glide.with(holder.itemView.getContext())
                 .load(Uri.parse(user.getImage()))
                 .placeholder(R.drawable.ic_baseline_person_24)
                 .into(holder.userImage);}
-        /*if (user.getImage()!= null){
-            holder.userImage.setImageURI(Uri.parse(user.getImage()));*/
+
 
         else holder.userImage.setImageResource(R.drawable.ic_baseline_person_24);
 
@@ -91,8 +90,8 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
         TextView userName;
         @BindView(R.id.image_user)
         ImageView userImage;
-        @BindView(R.id.checkbox)
-        ImageView checkbox;
+        @BindView(R.id.phone_number)
+        TextView phone;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

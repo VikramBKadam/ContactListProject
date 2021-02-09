@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
+import com.example.assignment.model.Contact;
 import com.example.assignment.model.User;
 import com.example.assignment.repository.LocalRepository;
 
@@ -23,6 +24,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class Tab1ViewModel extends AndroidViewModel {
+    public LiveData<PagedList<Contact>> contactList;
+    public LiveData<PagedList<Contact>> queryContactList;
 
 
     public LiveData<PagedList<User>> userList ;
@@ -44,10 +47,7 @@ public class Tab1ViewModel extends AndroidViewModel {
     public Tab1ViewModel(@NonNull Application application) {
         super(application);
     }
-    
-    public void refresh(){
-        fetchDataFromDatabase();
-    }
+
 
     public void fetchDataFromDatabase() {
         PagedList.Config config = (new PagedList.Config.Builder())
@@ -177,4 +177,26 @@ public class Tab1ViewModel extends AndroidViewModel {
                 .setPageSize(10).build();
         queriedUserList = new LivePagedListBuilder<>(repository.queryAllUser(query), config).build();
     }
+
+    public void contactInit() {
+        repository = new LocalRepository(getApplication());
+
+        PagedList.Config config = (new PagedList.Config.Builder()).setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(10)
+                .setPageSize(10).build();
+
+        contactList = new LivePagedListBuilder<>(repository.getAllContacts(), config).build();
+    }
+
+    public void queryContactInit(String query) {
+        repository = new LocalRepository(getApplication());
+
+        PagedList.Config config = (new PagedList.Config.Builder()).setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(10)
+                .setPageSize(10).build();
+
+        queryContactList = new LivePagedListBuilder<>(repository.getQueryContact(query), config).build();
+    }
+
+
 }

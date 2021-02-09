@@ -18,6 +18,8 @@ public class MyFragmentAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 1: return new Tab2();
+            case 2: return new Tab3();
+
             default: return new Tab1();
         }
 
@@ -25,7 +27,7 @@ public class MyFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
     @Override
     public CharSequence getPageTitle(int position) {
@@ -33,6 +35,7 @@ public class MyFragmentAdapter extends FragmentStatePagerAdapter {
         switch (position){
             case 0: return "View";
             case 1: return "Create Entry";
+            case 2: return "Contacts";
 
         }
         return null;

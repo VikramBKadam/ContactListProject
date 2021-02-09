@@ -216,7 +216,7 @@ public class Tab1 extends Fragment implements ItemClickListener{
             }
 
         } else {
-            Intent intent =new Intent(getActivity(),EditActivity.class);
+            Intent intent =new Intent(getActivity(),DetailActivity.class);
             intent.putExtra("ID",String.valueOf(user.getId()));
             getActivity().startActivity(intent);
 

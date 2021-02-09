@@ -18,7 +18,6 @@ public interface UserDao {
     @Insert
     Completable insert(User user);
 
-
     @Query("SELECT * FROM User")
     DataSource.Factory<Integer,User> getAllUser();
 
@@ -38,7 +37,7 @@ public interface UserDao {
 
     
 
-    @Query("select * from User where name like :query or phoneNumber like :query")
+    @Query("SELECT * FROM User WHERE name LIKE :query OR phoneNumber LIKE :query")
     DataSource.Factory<Integer, User> queryAllUser(String query);
 
 

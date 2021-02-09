@@ -5,15 +5,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,7 +84,42 @@ public class DetailActivity extends AppCompatActivity {
             textViewName.setText("Name: "+user.getName());
             textViewPhone.setText("Mobile: "+user.getPhoneNumber());
             textViewBirthday.setText("BirthDate: "+user.getBirthday());
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog builder = new Dialog(DetailActivity.this);
+                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    builder.getWindow().setBackgroundDrawable(
+                            new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+
+                        }
+            });
+
+
+                    ImageView imageView1 = new ImageView(DetailActivity.this);
+                    if(user.getImage()!=null){
+                        Log.d("TAG", "onTouch: "+user.getImage());
+                        Glide.with(DetailActivity.this).load(Uri.parse(user.getImage()))
+                                .placeholder(R.drawable.ic_baseline_person_24)
+                                .into(imageView1);
+                    }else {imageView1.setImageResource(R.drawable.ic_baseline_person_24);}
+
+                    builder.addContentView(imageView1, new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT));
+                    builder.show();
+
+
+                }
+            });
+
         });
+
+
+
 
 
     }
