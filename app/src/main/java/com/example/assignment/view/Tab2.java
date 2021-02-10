@@ -316,6 +316,8 @@ public class Tab2 extends Fragment {
 
     private void clearFields() {
         userImage.setImageResource(R.drawable.ic_baseline_person_24);
+        phone_linear_layout1.setVisibility(View.GONE);
+        phone_linear_layout2.setVisibility(View.GONE);
         userName.setText("");
         userPhoneNumber.setText("");
         userPhoneNumber1.setText("");
