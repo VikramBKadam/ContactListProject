@@ -19,6 +19,7 @@
                 android:layout_height="300dp"
                 android:layout_marginRight="10dp"
                 android:src="@drawable/ic_baseline_person_24" />
+
             <Button
                 android:id="@+id/buttonAddProfilePic"
                 android:layout_width="match_parent"
@@ -39,17 +40,97 @@
                 android:hint="Enter Name"
                 android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/editTextPhone"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:ems="10"
-                android:hint="Enter Mobile No:"
-                android:inputType="phone" />
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/pincode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:digits="1234567890+"
+                    android:hint="+91"
+                    android:maxLength="3" />
+
+                <EditText
+                    android:id="@+id/editTextPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:ems="10"
+                    android:hint="Enter Mobile No:"
+                    android:inputType="phone"
+                    android:maxLength="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/phone_linear_layout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/pincode1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:digits="1234567890+"
+                    android:hint="+91"
+                    android:maxLength="3" />
+
+
+                <EditText
+                    android:id="@+id/editTextPhone1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:ems="10"
+                    android:hint="Enter Mobile No:"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                     />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/phone_linear_layout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/pincode2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:digits="1234567890+"
+                    android:hint="+91"
+                    android:maxLength="3" />
+
+                <EditText
+
+                    android:id="@+id/editTextPhone2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:ems="10"
+                    android:hint="Enter Mobile No:"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                     />
+
+            </LinearLayout>
 
             <TextView
 
@@ -61,8 +142,7 @@
                 android:drawableRight="@drawable/ic_baseline_calendar_today_24"
                 android:gravity="center"
                 android:text="Select Birthday   "
-                android:textSize="20sp"
-              />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/editTextDate"
@@ -72,10 +152,10 @@
 
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
-
                 android:hint=" Birthday"
-                android:inputType="date" />
+
+                android:inputType="date"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/button"

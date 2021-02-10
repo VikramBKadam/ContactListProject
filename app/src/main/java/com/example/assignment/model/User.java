@@ -21,20 +21,25 @@ public class User {
     private String image;
     @ColumnInfo(name="phoneNumber")
     private String  phoneNumber;
+    @ColumnInfo(name="phoneNumber2")
+    private String  phoneNumber2;
+    @ColumnInfo(name="phoneNumber3")
+    private String  phoneNumber3;
     @ColumnInfo
     private String birthday;
     @TypeConverters(DateConverter.class)
     private Date date;
 
-    public User(String name, String phoneNumber, String birthday,String image,Date date) {
+    public User(String name, String phoneNumber,String phoneNumber2,String phoneNumber3, String birthday,String image,Date date) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.birthday = birthday;
         this.image=image;
         this.date=date;
+        this.phoneNumber3=phoneNumber3;
+        this.phoneNumber2=phoneNumber2;
     }
-    public User() {
-    }
+
 
     public int getId() {
         return id;
@@ -62,6 +67,22 @@ public class User {
 
     public String getImage() {
         return image;
+    }
+
+    public String getPhoneNumber2() {
+        return phoneNumber2;
+    }
+
+    public void setPhoneNumber2(String phoneNumber2) {
+        this.phoneNumber2 = phoneNumber2;
+    }
+
+    public String getPhoneNumber3() {
+        return phoneNumber3;
+    }
+
+    public void setPhoneNumber3(String phoneNumber3) {
+        this.phoneNumber3 = phoneNumber3;
     }
 
     public void setImage(String image) {

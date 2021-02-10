@@ -20,7 +20,9 @@ public abstract class UserDatabase extends RoomDatabase {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
-            database.execSQL("alter table 'user' add 'date' integer ");
+           // database.execSQL("alter table 'user' add 'phonenumber1' text ,  add 'phonenumber2' text");
+
+           // database.execSQL("alter table 'user' add 'date' integer ");
           /*  database.execSQL("CREATE TABLE Contacts (id INTEGER, "
                     + "name TEXT,"+"contactNo TEXT , PRIMARY KEY(id))");*/
 

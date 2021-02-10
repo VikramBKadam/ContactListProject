@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,12 +24,14 @@ import androidx.viewpager.widget.ViewPager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +66,21 @@ public class Tab2 extends Fragment {
 
     @BindView(R.id.editTextPhone)
     EditText userPhoneNumber;
+    @BindView(R.id.editTextPhone1)
+    EditText userPhoneNumber1;
+    @BindView(R.id.editTextPhone2)
+    EditText userPhoneNumber2;
+    @BindView(R.id.phone_linear_layout1)
+    LinearLayout phone_linear_layout1;
+    @BindView(R.id.phone_linear_layout2)
+    LinearLayout phone_linear_layout2;
+
+    @BindView(R.id.pincode)
+    EditText pincode;
+    @BindView(R.id.pincode1)
+    EditText pincode1;
+    @BindView(R.id.pincode2)
+    EditText pincode2;
 
     @BindView(R.id.button)
     Button button;
@@ -72,7 +90,7 @@ public class Tab2 extends Fragment {
     Button addProfilePic;
 
     String ProfilePicPath;
-    String ProfilePicUri ;
+    String ProfilePicUri;
 
     private final int REQUEST_CODE_CAMERA = 0;
     private final int REQUEST_CODE_GALLERY = 1;
@@ -88,7 +106,7 @@ public class Tab2 extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab2_fragment, container, false);
         ButterKnife.bind(this, view);
-         uriFromBitmap =new UriFromBitmap();
+        uriFromBitmap = new UriFromBitmap();
 
         datePick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,21 +127,58 @@ public class Tab2 extends Fragment {
             }
         });
 
+        userPhoneNumber.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                phone_linear_layout1.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+        userPhoneNumber1.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                phone_linear_layout2.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String name = userName.getText().toString();
-                String phoneNumber = userPhoneNumber.getText().toString();
-                String birthday = userBirthDay.getText().toString();
-                if (name.equals("")||phoneNumber.equals("")){
-                    Toast.makeText(getContext(), "Enter Your Details", Toast.LENGTH_SHORT).show();
+                String phoneNumber;
+                String phoneNumber1;
+                String phoneNumber2;
+
+                if(pincode.getText().toString().equals("")){
+                     phoneNumber = "+91"+userPhoneNumber.getText().toString();
                 }else {
-                    User user = new User(name, phoneNumber, birthday, ProfilePicUri,new Date());
+                    phoneNumber=pincode.getText().toString()+userPhoneNumber.getText().toString();
+                }
+                if(pincode1.getText().toString().equals("")){
+                    phoneNumber1 = "+91"+userPhoneNumber.getText().toString();
+                }else {
+                    phoneNumber1=pincode1.getText().toString()+userPhoneNumber.getText().toString();
+                }
+                if(pincode2.getText().toString().equals("")){
+                    phoneNumber2 = "+91"+userPhoneNumber.getText().toString();
+                }else {
+                    phoneNumber2=pincode2.getText().toString()+userPhoneNumber.getText().toString();
+                }
 
 
+                String birthday = userBirthDay.getText().toString();
+                if (name.equals("") || phoneNumber.equals("")) {
+                    Toast.makeText(getContext(), "Enter Your Details", Toast.LENGTH_SHORT).show();
+                } else {
+                    User user = new User(name, phoneNumber,phoneNumber1,phoneNumber2, birthday, ProfilePicUri, new Date());
 
-                    Log.d("DATE1",String.valueOf(new Date()));
+                    Log.d("Phone", phoneNumber1);
+                    Log.d("Phone", phoneNumber2);
+                    Log.d("DATE1", String.valueOf(new Date()));
                     mViewModel.saveToDatabase(user);
                     Toast.makeText(getContext(), "Successfully Registered", Toast.LENGTH_SHORT).show();
                     clearFields();
@@ -169,6 +224,7 @@ public class Tab2 extends Fragment {
         });
         builder.show();
     }
+
     private void checkPermissionAndOpenGallery() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED ||
@@ -221,18 +277,18 @@ public class Tab2 extends Fragment {
             switch (requestCode) {
                 case REQUEST_CODE_CAMERA:
                     Bitmap bitmapCameraImage = (Bitmap) data.getExtras().get("data");
-                    Uri cameraImageUri ;
+                    Uri cameraImageUri;
                     try {
                         Log.d("TAG", "Inside try of onActivity result of Tab2Fragment");
 
-                        cameraImageUri=SaveBitmap.saveBitmapReturnUri(bitmapCameraImage);
-                     //   cameraImageUri = uriFromBitmap.getImageUri(getContext(),bitmapCameraImage);
+                        cameraImageUri = SaveBitmap.saveBitmapReturnUri(bitmapCameraImage);
+                        //   cameraImageUri = uriFromBitmap.getImageUri(getContext(),bitmapCameraImage);
                         Log.d("TAG", "cameraUri: " + cameraImageUri.toString());
-                      //  Log.d("TAG", "cameraUri: " + cameraImageUri.getPath());
+                        //  Log.d("TAG", "cameraUri: " + cameraImageUri.getPath());
                         userImage.setImageURI(cameraImageUri);
                         //  ProfilePicPath = cameraImageUri.getPath();
 
-                        ProfilePicUri=cameraImageUri.toString();
+                        ProfilePicUri = cameraImageUri.toString();
 
                     } catch (Exception e) {
                         Log.d("TAG", "Inside catch: " + e.getMessage());
@@ -243,9 +299,9 @@ public class Tab2 extends Fragment {
 
                 case REQUEST_CODE_GALLERY:
                     Uri selectedImageUri = data.getData();
-                   // Log.d("TAG", "URi: " + selectedImageUri.getPath());
-                 //   ProfilePicPath = selectedImageUri.getPath();
-                    ProfilePicUri=selectedImageUri.toString();
+                    // Log.d("TAG", "URi: " + selectedImageUri.getPath());
+                    //   ProfilePicPath = selectedImageUri.getPath();
+                    ProfilePicUri = selectedImageUri.toString();
                     userImage.setImageURI(selectedImageUri);
                     break;
             }
@@ -262,6 +318,12 @@ public class Tab2 extends Fragment {
         userImage.setImageResource(R.drawable.ic_baseline_person_24);
         userName.setText("");
         userPhoneNumber.setText("");
+        userPhoneNumber1.setText("");
+        userPhoneNumber2.setText("");
+        pincode1.setText("");
+        pincode.setText("");
+        pincode2.setText("");
+
         userBirthDay.setText("");
     }
 
