@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.assignment.R;
@@ -216,9 +218,23 @@ public class Tab1 extends Fragment implements ItemClickListener{
             }
 
         } else {
-            Intent intent =new Intent(getActivity(),DetailActivity.class);
+            /*ViewPager viewPager = getActivity().findViewById(R.id.view_pager);
+            viewPager.getCurrentItem();*/
+           /* Tab2 tab2=Tab2.newInstance();*/
+            RelativeLayout relativeLayout=view.findViewById(R.id.tab1fragment);
+            if (relativeLayout!=null){
+                relativeLayout.setVisibility(View.GONE);
+            }
+
+
+
+           // getFragmentManager().beginTransaction().replace(R.id.view_pager,tab2);
+            ((MainActivity) getActivity()).switchTodetailfragment(user.getId());
+
+        /* getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.tab1fragment,tab2).commit();*/
+            /*Intent intent =new Intent(getActivity(),DetailActivity.class);
             intent.putExtra("ID",String.valueOf(user.getId()));
-            getActivity().startActivity(intent);
+            getActivity().startActivity(intent);*/
 
         }
 

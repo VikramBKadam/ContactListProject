@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
@@ -172,6 +174,21 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    public void  switchTodetailfragment(int id){
+        FragmentManager manager=getSupportFragmentManager();
+
+        FragmentTransaction transaction=manager.beginTransaction();
+        transaction.replace(R.id.tab1fragment,Tab2.Tab2Instance(id)).addToBackStack("tag")
+                .commit();
+    }
+    public void  switchToTab1fragment(){
+        FragmentManager manager=getSupportFragmentManager();
+
+        FragmentTransaction transaction=manager.beginTransaction();
+        transaction.replace(R.id.tab2_fragment,Tab1.newInstance())
+                .commit();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

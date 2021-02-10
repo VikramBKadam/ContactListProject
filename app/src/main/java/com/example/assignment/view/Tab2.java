@@ -18,6 +18,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.room.TypeConverters;
 import androidx.viewpager.widget.ViewPager;
 
@@ -35,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.assignment.R;
 import com.example.assignment.helper.SaveBitmap;
 import com.example.assignment.helper.UriFromBitmap;
@@ -57,6 +59,7 @@ public class Tab2 extends Fragment {
     private Tab1ViewModel mViewModel;
     @BindView(R.id.image_view_user)
     ImageView userImage;
+
 
     @BindView(R.id.editTextDate)
     TextView userBirthDay;
@@ -84,10 +87,15 @@ public class Tab2 extends Fragment {
 
     @BindView(R.id.button)
     Button button;
+    @BindView(R.id.edit_details)
+    Button editDetails;
     @BindView(R.id.date_picker)
     TextView datePick;
     @BindView(R.id.buttonAddProfilePic)
     Button addProfilePic;
+
+    @BindView(R.id.edit_details_done)
+    Button editDetailsDone;
 
     String ProfilePicPath;
     String ProfilePicUri;
@@ -97,8 +105,31 @@ public class Tab2 extends Fragment {
     UriFromBitmap uriFromBitmap;
     SaveBitmap saveBitmap;
 
+    public Tab2() {
+    }
+
+    ;
+
+    public static Tab2 Tab2Instance(int id) {
+        Tab2 tab2 = new Tab2();
+        Bundle bundle = new Bundle();
+        bundle.putInt("ID", id);
+        tab2.setArguments(bundle);
+        return tab2;
+    }
+
     public static Tab2 newInstance() {
         return new Tab2();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            int id = getArguments().getInt("ID");
+            Log.d("Tag", String.valueOf(id));
+
+        }
     }
 
     @Override
@@ -106,6 +137,108 @@ public class Tab2 extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab2_fragment, container, false);
         ButterKnife.bind(this, view);
+        mViewModel= ViewModelProviders.of(getActivity()).get(Tab1ViewModel.class);
+
+        if (getArguments() != null) {
+            editDetails.setVisibility(View.VISIBLE);
+            int id = getArguments().getInt("ID");
+            addProfilePic.setVisibility(View.GONE);
+            button.setVisibility(View.GONE);
+            userPhoneNumber.setEnabled(false);
+            userPhoneNumber1.setEnabled(false);
+            userPhoneNumber2.setEnabled(false);
+            datePick.setVisibility(View.GONE);
+            userName.setEnabled(false);
+            mViewModel.fetchDetailsFromDatabase(id);
+            mViewModel.getUser().observe(this, user -> {
+                if (user.getImage() != null) {
+                    Glide.with(this).load(Uri.parse(user.getImage()))
+                            .placeholder(R.drawable.ic_baseline_person_24)
+                            .into(userImage);
+                } else {
+                    userImage.setImageResource(R.drawable.ic_baseline_person_24);
+                }
+                userName.setText(user.getName());
+                userPhoneNumber.setText(user.getPhoneNumber().substring(3));
+                pincode.setText(user.getPhoneNumber().substring(0,3));
+
+                Log.d("TAG", user.getPhoneNumber());
+                if (user.getPhoneNumber2() != null) {
+
+                    phone_linear_layout1.setVisibility(View.VISIBLE);
+                    userPhoneNumber1.setText(user.getPhoneNumber2().substring(3));
+                    pincode1.setText(user.getPhoneNumber2().substring(0,3));
+                }
+                if (user.getPhoneNumber3() != null) {
+
+                    phone_linear_layout2.setVisibility(View.VISIBLE);
+                    userPhoneNumber2.setText(user.getPhoneNumber3().substring(3));
+                    Log.e("TAG1", user.getPhoneNumber3().substring(3) );
+                    pincode2.setText(user.getPhoneNumber3().substring(0,3));
+                }
+
+                userBirthDay.setText(user.getBirthday());
+            });
+            editDetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editDetails.setVisibility(View.GONE);
+                    addProfilePic.setVisibility(View.VISIBLE);
+                    editDetailsDone.setVisibility(View.VISIBLE);
+                    userPhoneNumber.setEnabled(true);
+                    userPhoneNumber1.setEnabled(true);
+                    userPhoneNumber2.setEnabled(true);
+                    datePick.setVisibility(View.VISIBLE);
+                    userName.setEnabled(true);
+
+
+                }
+            });
+
+            editDetailsDone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String name =userName.getText().toString();
+                    String phoneNumber;
+                    String phoneNumber1;
+                    String phoneNumber2;
+                    if (pincode.getText().toString().equals("")) {
+                        phoneNumber = "+91" + userPhoneNumber.getText().toString();
+                    } else {
+                        phoneNumber = pincode.getText().toString() + userPhoneNumber.getText().toString();
+                    }
+                    if (pincode1.getText().toString().equals("")) {
+                        phoneNumber1 = "+91" + userPhoneNumber1.getText().toString();
+                    } else {
+                        phoneNumber1 = pincode1.getText().toString() + userPhoneNumber1.getText().toString();
+                    }
+                    if (pincode2.getText().toString().equals("")) {
+                        phoneNumber2 = "+91" + userPhoneNumber2.getText().toString();
+                    } else {
+                        phoneNumber2 = pincode2.getText().toString() + userPhoneNumber2.getText().toString();
+                    }
+                    String birthday =userBirthDay.getText().toString();
+                    if (ProfilePicUri==null){
+                        mViewModel.getUser().observe(getActivity(),user -> {
+                            ProfilePicUri=user.getImage();
+                        });
+                    }
+
+
+                    mViewModel.updateUser(name,birthday,phoneNumber,phoneNumber1,phoneNumber2,ProfilePicUri,id);
+                    ((MainActivity) getActivity()).switchToTab1fragment();
+
+
+
+
+                }
+            });
+
+
+
+        }
+
+
         uriFromBitmap = new UriFromBitmap();
 
         datePick.setOnClickListener(new View.OnClickListener() {
@@ -153,20 +286,20 @@ public class Tab2 extends Fragment {
                 String phoneNumber1;
                 String phoneNumber2;
 
-                if(pincode.getText().toString().equals("")){
-                     phoneNumber = "+91"+userPhoneNumber.getText().toString();
-                }else {
-                    phoneNumber=pincode.getText().toString()+userPhoneNumber.getText().toString();
+                if (pincode.getText().toString().equals("")) {
+                    phoneNumber = "+91" + userPhoneNumber.getText().toString();
+                } else {
+                    phoneNumber = pincode.getText().toString() + userPhoneNumber.getText().toString();
                 }
-                if(pincode1.getText().toString().equals("")){
-                    phoneNumber1 = "+91"+userPhoneNumber.getText().toString();
-                }else {
-                    phoneNumber1=pincode1.getText().toString()+userPhoneNumber.getText().toString();
+                if (pincode1.getText().toString().equals("")) {
+                    phoneNumber1 = "+91" + userPhoneNumber1.getText().toString();
+                } else {
+                    phoneNumber1 = pincode1.getText().toString() + userPhoneNumber1.getText().toString();
                 }
-                if(pincode2.getText().toString().equals("")){
-                    phoneNumber2 = "+91"+userPhoneNumber.getText().toString();
-                }else {
-                    phoneNumber2=pincode2.getText().toString()+userPhoneNumber.getText().toString();
+                if (pincode2.getText().toString().equals("")) {
+                    phoneNumber2 = "+91" + userPhoneNumber2.getText().toString();
+                } else {
+                    phoneNumber2 = pincode2.getText().toString() + userPhoneNumber2.getText().toString();
                 }
 
 
@@ -174,7 +307,7 @@ public class Tab2 extends Fragment {
                 if (name.equals("") || phoneNumber.equals("")) {
                     Toast.makeText(getContext(), "Enter Your Details", Toast.LENGTH_SHORT).show();
                 } else {
-                    User user = new User(name, phoneNumber,phoneNumber1,phoneNumber2, birthday, ProfilePicUri, new Date());
+                    User user = new User(name, phoneNumber, phoneNumber1, phoneNumber2, birthday, ProfilePicUri, new Date());
 
                     Log.d("Phone", phoneNumber1);
                     Log.d("Phone", phoneNumber2);

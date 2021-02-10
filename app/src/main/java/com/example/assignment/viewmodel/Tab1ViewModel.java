@@ -130,8 +130,8 @@ public class Tab1ViewModel extends AndroidViewModel {
 
     }
 
-    public void updateUser(String u_name,String u_bday,String u_phonenumber,String image,int Id){
-        repository.updateUserById(u_name, u_bday,u_phonenumber,image, Id).subscribeOn(Schedulers.io())
+    public void updateUser(String u_name,String u_bday,String u_phonenumber,String u_phonenumbe1,String u_phonenumber2,String image,int Id){
+        repository.updateUserById(u_name, u_bday,u_phonenumber,u_phonenumbe1,u_phonenumber2,image, Id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override

@@ -27,8 +27,8 @@ public interface UserDao {
     @Query("DELETE  FROM User  WHERE id = :Id")
     Completable deleteUser(int Id);
 
-    @Query("UPDATE User SET name=:u_name,birthday=:u_bday,phoneNumber =:u_phonenumber,image=:image WHERE id = :Id ")
-    Completable  updateUserById(String u_name,String u_bday,String u_phonenumber,String image,int Id);
+    @Query("UPDATE User SET name=:u_name,birthday=:u_bday,phoneNumber =:u_phonenumber,phoneNumber2=:u_phonenumber1,phoneNumber3=:u_phonenumber2,image=:image WHERE id = :Id ")
+    Completable  updateUserById(String u_name,String u_bday,String u_phonenumber,String u_phonenumber1,String u_phonenumber2,String image,int Id);
 
 
     @Query("SELECT * FROM User WHERE id = :Id")
