@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModelProvider;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -28,11 +30,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +70,9 @@ public class Tab2 extends Fragment {
 
     @BindView(R.id.editTextPersonName)
     EditText userName;
+    @BindView(R.id.enlarge_image)
+    ImageView enlargeImage;
+
 
     @BindView(R.id.editTextPhone)
     EditText userPhoneNumber;
@@ -102,6 +109,7 @@ public class Tab2 extends Fragment {
 
     private final int REQUEST_CODE_CAMERA = 0;
     private final int REQUEST_CODE_GALLERY = 1;
+    int id;
     UriFromBitmap uriFromBitmap;
     SaveBitmap saveBitmap;
 
@@ -140,8 +148,9 @@ public class Tab2 extends Fragment {
         mViewModel= ViewModelProviders.of(getActivity()).get(Tab1ViewModel.class);
 
         if (getArguments() != null) {
+
             editDetails.setVisibility(View.VISIBLE);
-            int id = getArguments().getInt("ID");
+             id = getArguments().getInt("ID");
             addProfilePic.setVisibility(View.GONE);
             button.setVisibility(View.GONE);
             userPhoneNumber.setEnabled(false);
@@ -151,6 +160,21 @@ public class Tab2 extends Fragment {
             userName.setEnabled(false);
             mViewModel.fetchDetailsFromDatabase(id);
             mViewModel.getUser().observe(this, user -> {
+                userImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        enlargeImage.setVisibility(View.VISIBLE);
+                        if (user.getImage() != null) {
+                            Glide.with(Tab2.this).load(Uri.parse(user.getImage()))
+                                    .placeholder(R.drawable.ic_baseline_person_24)
+                                    .into(enlargeImage);
+                        } else {
+                            enlargeImage.setImageResource(R.drawable.ic_baseline_person_24);
+                        }
+
+                    }
+                });
+                Log.d("image","image is" +user.getImage());
                 if (user.getImage() != null) {
                     Glide.with(this).load(Uri.parse(user.getImage()))
                             .placeholder(R.drawable.ic_baseline_person_24)
@@ -178,6 +202,9 @@ public class Tab2 extends Fragment {
                 }
 
                 userBirthDay.setText(user.getBirthday());
+
+
+
             });
             editDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -194,6 +221,8 @@ public class Tab2 extends Fragment {
 
                 }
             });
+
+
 
             editDetailsDone.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -237,6 +266,30 @@ public class Tab2 extends Fragment {
 
 
         }
+
+       /* mViewModel.fetchDetailsFromDatabase(id);
+
+        mViewModel.getUser().observe(this,user -> {
+            userImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   enlargeImage.setVisibility(View.VISIBLE);
+                    if (user.getImage() != null) {
+                        Glide.with(getActivity()).load(Uri.parse(user.getImage()))
+                                .placeholder(R.drawable.ic_baseline_person_24)
+                                .into(enlargeImage);
+                    } else {
+                        enlargeImage.setImageResource(R.drawable.ic_baseline_person_24);
+                    }
+
+
+
+                }
+            });
+
+        });*/
+
+
 
 
         uriFromBitmap = new UriFromBitmap();
@@ -307,7 +360,7 @@ public class Tab2 extends Fragment {
                 if (name.equals("") || phoneNumber.equals("")) {
                     Toast.makeText(getContext(), "Enter Your Details", Toast.LENGTH_SHORT).show();
                 } else {
-                    User user = new User(name, phoneNumber, phoneNumber1, phoneNumber2, birthday, ProfilePicUri, new Date());
+                    User user = new User(name, phoneNumber, phoneNumber1, phoneNumber2, birthday, ProfilePicUri, new Date(),System.currentTimeMillis());
 
                     Log.d("Phone", phoneNumber1);
                     Log.d("Phone", phoneNumber2);

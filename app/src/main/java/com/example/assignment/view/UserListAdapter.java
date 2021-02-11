@@ -3,7 +3,9 @@ package com.example.assignment.view;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
@@ -22,10 +25,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment.R;
+import com.example.assignment.helper.DateUtils;
 import com.example.assignment.model.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,9 +68,11 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
         return new MyViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         User user = getItem(position);
+        setUpHeaderData(user, holder.txtHeader,position);
         if(user != null){
             holder.userName.setText(user.getName());
             holder.phone.setText(user.getPhoneNumber());
@@ -76,11 +83,39 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
                 .load(Uri.parse(user.getImage()))
                 .placeholder(R.drawable.ic_baseline_person_24)
                 .into(holder.userImage);}
-
-
         else holder.userImage.setImageResource(R.drawable.ic_baseline_person_24);
 
+       
 
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void setUpHeaderData(User user, TextView dateTextView, int position) {
+        if (user == null) {
+            return;
+        }
+        Pair<String, String> timeDateForCurrentUser = DateUtils.getHeaderDateAndTime(new Date(user.getCreationTime()));
+        if(position > 0){
+            User prevUser = getItem(position - 1);
+            if(prevUser != null){
+                Pair<String, String> timeDateForPrevUser = DateUtils.getHeaderDateAndTime(new Date(prevUser.getCreationTime()));
+                if(timeDateForCurrentUser.first.toLowerCase().trim().equals(timeDateForPrevUser.first.toLowerCase().trim())){
+                    dateTextView.setVisibility(View.GONE);
+                } else  {
+                    setHeaderDate(timeDateForCurrentUser.first,dateTextView);
+                }
+            } else {
+                setHeaderDate(timeDateForCurrentUser.first,dateTextView);
+            }
+        } else {
+            setHeaderDate(timeDateForCurrentUser.first,dateTextView);
+        }
+    }
+
+    private void setHeaderDate(String date, TextView dateTextView) {
+        dateTextView.setVisibility(View.VISIBLE);
+        dateTextView.setText(date);
     }
 
 
@@ -92,6 +127,8 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
         ImageView userImage;
         @BindView(R.id.phone_number)
         TextView phone;
+        @BindView(R.id.txtHeader)
+        TextView txtHeader;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

@@ -29,8 +29,10 @@ public class User {
     private String birthday;
     @TypeConverters(DateConverter.class)
     private Date date;
+    @ColumnInfo(name  ="creationTime")
+    private long creationTime;
 
-    public User(String name, String phoneNumber,String phoneNumber2,String phoneNumber3, String birthday,String image,Date date) {
+    public User(String name, String phoneNumber,String phoneNumber2,String phoneNumber3, String birthday,String image,Date date,long creationTime) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.birthday = birthday;
@@ -38,8 +40,16 @@ public class User {
         this.date=date;
         this.phoneNumber3=phoneNumber3;
         this.phoneNumber2=phoneNumber2;
+        this.creationTime=creationTime;
     }
 
+    public long getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(long creationTime) {
+        this.creationTime = creationTime;
+    }
 
     public int getId() {
         return id;
@@ -114,11 +124,12 @@ public class User {
                 Objects.equals(name, user.name) &&
                 Objects.equals(image, user.image) &&
                 Objects.equals(phoneNumber, user.phoneNumber) &&
-                Objects.equals(birthday, user.birthday);
+                Objects.equals(birthday, user.birthday)&&
+        Objects.equals(creationTime, user.creationTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, image, phoneNumber, birthday);
+        return Objects.hash(id, name, image, phoneNumber, birthday,creationTime);
     }
 }
