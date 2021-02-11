@@ -29,37 +29,6 @@ public class SyncNativeContacts {
         localRepository = new LocalRepository(context);
     }
 
-    private List<Contact> contactList = new ArrayList<>();
-
-    public void syncNativeContacts() {
-
-        getContactArrayList();
-
-        addContactListToDB();
-    }
-
-    private void addContactListToDB() {
-//        for (Contact eachContact : contactList) {
-//            localRepository.addContact(eachContact).subscribe();
-//        }
-        localRepository.addListOfContact(contactList)
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        Log.d("TAG", "Inside onSubscribe of addContactListDB in SyncNativeContacts");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.d("TAG", "Inside onComplete of addContactListDB in SyncNativeContacts");
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Log.d("TAG", "Inside onError of addContactListDB in SyncNativeContacts.: " + e.getMessage());
-                    }
-                });
-    }
 
     public Single<List<Contact>> getContactArrayList() {
         return Single.fromCallable(() ->{

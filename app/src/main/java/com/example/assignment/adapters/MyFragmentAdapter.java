@@ -1,10 +1,14 @@
-package com.example.assignment.view;
+package com.example.assignment.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.example.assignment.view.Tab1;
+import com.example.assignment.view.Tab2;
+import com.example.assignment.view.Tab3;
 
 public class MyFragmentAdapter extends FragmentStatePagerAdapter {
     public MyFragmentAdapter(@NonNull FragmentManager fm) {

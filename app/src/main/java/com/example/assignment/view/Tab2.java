@@ -8,13 +8,11 @@ import androidx.lifecycle.ViewModelProvider;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -22,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.room.TypeConverters;
 import androidx.viewpager.widget.ViewPager;
 
 import android.provider.MediaStore;
@@ -31,23 +28,19 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment.R;
+import com.example.assignment.adapters.MyFragmentAdapter;
 import com.example.assignment.helper.SaveBitmap;
-import com.example.assignment.helper.UriFromBitmap;
 import com.example.assignment.model.User;
-import com.example.assignment.repository.DateConverter;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
 import java.util.Calendar;
@@ -114,7 +107,7 @@ public class Tab2 extends Fragment {
     private final int REQUEST_CODE_CAMERA = 0;
     private final int REQUEST_CODE_GALLERY = 1;
     int id;
-    UriFromBitmap uriFromBitmap;
+
     SaveBitmap saveBitmap;
 
     public Tab2() {
@@ -311,7 +304,7 @@ public class Tab2 extends Fragment {
 
 
 
-        uriFromBitmap = new UriFromBitmap();
+
 
         datePick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -379,6 +372,7 @@ public class Tab2 extends Fragment {
                 if (name.equals("") || phoneNumber.equals("")) {
                     Toast.makeText(getContext(), "Enter Your Details", Toast.LENGTH_SHORT).show();
                 } else {
+                    Log.d("Time",String.valueOf(System.currentTimeMillis()));
                     User user = new User(name, phoneNumber, phoneNumber1, phoneNumber2, birthday, ProfilePicUri, new Date(),System.currentTimeMillis());
 
                     Log.d("Phone", phoneNumber1);

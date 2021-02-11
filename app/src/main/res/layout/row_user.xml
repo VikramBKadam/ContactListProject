@@ -1,29 +1,26 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="150dp"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_marginBottom="10dp">
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
 
-    <TextView
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/txtHeader"
-        android:text="Dummy Text"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:textColor="@color/black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    android:background="@color/purple_200"
+    android:layout_marginBottom="10dp"
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <TextView
 
-        android:background="@color/purple_200">
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:id="@+id/txtHeader"
+            android:text="Dummy Text"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:background="@color/faint"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <ImageView
+            android:layout_below="@+id/txtHeader"
             android:id="@+id/image_user"
             android:layout_width="150dp"
             android:layout_height="150dp"
@@ -31,6 +28,7 @@
             android:src="@mipmap/ic_launcher" />
 
         <TextView
+            android:layout_marginTop="20dp"
             android:id="@+id/name_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,6 +39,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:layout_marginTop="10dp"
             android:id="@+id/phone_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,4 +53,4 @@
 
 
     </RelativeLayout>
-</LinearLayout>
+

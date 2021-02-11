@@ -228,10 +228,10 @@ public class Tab1 extends Fragment implements ItemClickListener{
 
 
 
-           // getFragmentManager().beginTransaction().replace(R.id.view_pager,tab2);
+
             ((MainActivity) getActivity()).switchTodetailfragment(user.getId());
 
-        /* getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.tab1fragment,tab2).commit();*/
+
             /*Intent intent =new Intent(getActivity(),DetailActivity.class);
             intent.putExtra("ID",String.valueOf(user.getId()));
             getActivity().startActivity(intent);*/

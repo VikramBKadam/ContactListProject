@@ -31,8 +31,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.assignment.R;
 import com.example.assignment.helper.SaveBitmap;
-import com.example.assignment.helper.UriFromBitmap;
-import com.example.assignment.model.User;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
 import java.util.Calendar;
@@ -41,7 +39,7 @@ public class EditActivity extends AppCompatActivity {
     String ProfilePicUri ;
     private final int REQUEST_CODE_CAMERA = 0;
     private final int REQUEST_CODE_GALLERY = 1;
-    UriFromBitmap uriFromBitmap;
+
 
 
     Toolbar toolbar;

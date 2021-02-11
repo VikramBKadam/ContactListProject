@@ -173,7 +173,7 @@ public class Tab1ViewModel extends AndroidViewModel {
 
     public void queryInit(String query) {
 
-       // repository = new LocalRepository(getApplication());
+
 
         PagedList.Config config = (new PagedList.Config.Builder()).setEnablePlaceholders(false)
                 .setInitialLoadSizeHint(10)

@@ -17,7 +17,6 @@ import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,16 +24,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.assignment.R;
+import com.example.assignment.adapters.MyFragmentAdapter;
 import com.example.assignment.helper.AndroidContactsChangeListener;
 import com.example.assignment.helper.SyncNativeContacts;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 import com.google.android.material.tabs.TabLayout;
-
-import io.reactivex.Completable;
-import io.reactivex.CompletableObserver;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     ContentResolver contentResolver;
