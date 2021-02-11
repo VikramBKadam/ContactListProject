@@ -4,7 +4,15 @@
     android:id="@+id/tab2_fragment"
     android:background="@color/faint">
 
+    <ImageView
+        android:background="@color/faint"
+        android:visibility="gone"
+        android:id="@+id/enlarge_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
@@ -16,12 +24,7 @@
             android:layout_margin="20dp"
             android:orientation="vertical">
 
-            <ImageView
-                android:background="@color/faint"
-                android:visibility="gone"
-                android:id="@+id/enlarge_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+
 
             <ImageView
                 android:id="@+id/image_view_user"

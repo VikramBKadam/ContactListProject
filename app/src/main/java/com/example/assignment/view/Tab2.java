@@ -2,6 +2,7 @@ package com.example.assignment.view;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
@@ -37,6 +38,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +74,8 @@ public class Tab2 extends Fragment {
     EditText userName;
     @BindView(R.id.enlarge_image)
     ImageView enlargeImage;
+    @BindView(R.id.scroll_view)
+    NestedScrollView scrollView;
 
 
     @BindView(R.id.editTextPhone)
@@ -153,6 +157,9 @@ public class Tab2 extends Fragment {
              id = getArguments().getInt("ID");
             addProfilePic.setVisibility(View.GONE);
             button.setVisibility(View.GONE);
+            pincode.setEnabled(false);
+            pincode1.setEnabled(false);
+            pincode2.setEnabled(false);
             userPhoneNumber.setEnabled(false);
             userPhoneNumber1.setEnabled(false);
             userPhoneNumber2.setEnabled(false);
@@ -160,7 +167,7 @@ public class Tab2 extends Fragment {
             userName.setEnabled(false);
             mViewModel.fetchDetailsFromDatabase(id);
             mViewModel.getUser().observe(this, user -> {
-                userImage.setOnClickListener(new View.OnClickListener() {
+              /*  userImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         enlargeImage.setVisibility(View.VISIBLE);
@@ -173,7 +180,7 @@ public class Tab2 extends Fragment {
                         }
 
                     }
-                });
+                });*/
                 Log.d("image","image is" +user.getImage());
                 if (user.getImage() != null) {
                     Glide.with(this).load(Uri.parse(user.getImage()))
@@ -212,6 +219,9 @@ public class Tab2 extends Fragment {
                     editDetails.setVisibility(View.GONE);
                     addProfilePic.setVisibility(View.VISIBLE);
                     editDetailsDone.setVisibility(View.VISIBLE);
+                    pincode.setEnabled(true);
+                    pincode1.setEnabled(true);
+                    pincode2.setEnabled(true);
                     userPhoneNumber.setEnabled(true);
                     userPhoneNumber1.setEnabled(true);
                     userPhoneNumber2.setEnabled(true);
@@ -267,12 +277,13 @@ public class Tab2 extends Fragment {
 
         }
 
-       /* mViewModel.fetchDetailsFromDatabase(id);
+        mViewModel.fetchDetailsFromDatabase(id);
 
         mViewModel.getUser().observe(this,user -> {
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    scrollView.setVisibility(View.GONE);
                    enlargeImage.setVisibility(View.VISIBLE);
                     if (user.getImage() != null) {
                         Glide.with(getActivity()).load(Uri.parse(user.getImage()))
@@ -287,7 +298,15 @@ public class Tab2 extends Fragment {
                 }
             });
 
-        });*/
+        });
+
+        enlargeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enlargeImage.setVisibility(View.GONE);
+                scrollView.setVisibility(View.VISIBLE);
+            }
+        });
 
 
 
