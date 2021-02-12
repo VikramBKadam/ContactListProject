@@ -41,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class Tab1 extends Fragment implements ItemClickListener{
+public class      Tab1 extends Fragment implements ItemClickListener{
 
     private Tab1ViewModel mViewModel;
     @BindView(R.id.user_recycler_view)
