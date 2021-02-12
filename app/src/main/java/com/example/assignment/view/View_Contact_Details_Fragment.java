@@ -32,11 +32,12 @@ public class View_Contact_Details_Fragment extends Fragment {
 
     String id;
     Tab1ViewModel mViewModel;
-    TextView contactName,contactNumber1,contactNumber2,contactNumber3,contactnumber4,contactNumber5,contactNumber6,contactNumber7
-            ,contactNumber8,contactNumber9,contactNumber10;
+    TextView contactName;
+    /*TextView contactName,contactNumber1,contactNumber2,contactNumber3,contactnumber4,contactNumber5,contactNumber6,contactNumber7
+            ,contactNumber8,contactNumber9,contactNumber10;*/
     Button showContactList;
-    LinearLayout linearLayout1,linearLayout2,linearLayout3,linearLayout4,linearLayout5,linearLayout6,linearLayout7,
-    linearLayout8,linearLayout9,linearLayout10;
+  /*  LinearLayout linearLayout1,linearLayout2,linearLayout3,linearLayout4,linearLayout5,linearLayout6,linearLayout7,
+    linearLayout8,linearLayout9,linearLayout10;*/
 
 
 
@@ -79,7 +80,7 @@ public class View_Contact_Details_Fragment extends Fragment {
 
         mViewModel= ViewModelProviders.of(getActivity()).get(Tab1ViewModel.class);
         contactName=view.findViewById(R.id.text_name_contact);
-        contactNumber1=view.findViewById(R.id.text_phone_contact1);
+       // contactNumber1=view.findViewById(R.id.text_phone_contact1);
         showContactList=view.findViewById(R.id.show_contact_list);
             showContactList.setOnClickListener(new View.OnClickListener() {
                 @Override

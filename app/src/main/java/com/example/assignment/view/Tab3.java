@@ -15,12 +15,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.assignment.R;
+import com.example.assignment.helper.SyncNativeContacts;
 import com.example.assignment.model.Contact;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
 public class Tab3 extends Fragment implements ContactClickListener{
+
+    TextView textView;
 
     RecyclerView recyclerViewContactList;
     ContactListAdapter recyclerviewAdapter;
@@ -52,6 +56,8 @@ public class Tab3 extends Fragment implements ContactClickListener{
 
 
     private void init(View view) {
+        textView=view.findViewById(R.id.total_contacts);
+        textView.setText(String.valueOf("Total Contacts : "+SyncNativeContacts.count));
         recyclerViewContactList = view.findViewById(R.id.contacts_recycler_view_);
         layoutManager = new LinearLayoutManager(getContext());
 

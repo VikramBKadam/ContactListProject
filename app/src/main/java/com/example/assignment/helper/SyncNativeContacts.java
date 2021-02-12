@@ -25,6 +25,7 @@ public class SyncNativeContacts {
 
     Context context;
     LocalRepository localRepository;
+    public static int count;
 
     public SyncNativeContacts(Context context) {
         this.context = context;
@@ -78,7 +79,7 @@ public class SyncNativeContacts {
         return Single.fromCallable(new Callable<List<Contact>>() {
             @Override
             public List<Contact> call() throws Exception {
-                int count = 0;
+                 count = 0;
 
                 ArrayList<Contact> contactList = new ArrayList<>();
                 StringBuilder mBuilder = new StringBuilder();
@@ -105,6 +106,8 @@ public class SyncNativeContacts {
 
                             assert phoneCursor != null;
                             while (phoneCursor.moveToNext()) {
+                                String typeLabel = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.LABEL));
+
                                 String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                                         .replaceAll("\\s", "");
                                 Log.e("TAG!",phoneNumber);
@@ -114,7 +117,7 @@ public class SyncNativeContacts {
                                     phoneNumber = "+91"+phoneNumber;
 
                                 if (!phoneList.contains(phoneNumber))
-                                    phoneList.add(phoneNumber);
+                                    phoneList.add( typeLabel +" : "+phoneNumber);
                                 Log.d("ContactListFragment", "id: "+id);
                                 Log.d("ContactListFragment", "Name: "+name);
                                 Log.d("ContactListFragment", "Phone: "+phoneNumber);
@@ -129,7 +132,7 @@ public class SyncNativeContacts {
                 }
                 mCursor.close();
 
-                Log.d("TAG", "Total Count: " + count);
+                Log.d("TAGcount", "Total Count: " + count);
 
                 return contactList;
             }
