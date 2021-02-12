@@ -1,5 +1,6 @@
 package com.example.assignment.view;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.example.assignment.model.User;
 import butterknife.BindView;
 
 public class ContactListAdapter extends PagedListAdapter<Contact, ContactListAdapter.ViewHolder> {
+    ContactClickListener contactClickListener;
+    MainActivity activity;
 
     public static DiffUtil.ItemCallback<Contact> DIFF_CALLBACK = new DiffUtil.ItemCallback<Contact>() {
         @Override
@@ -33,8 +36,9 @@ public class ContactListAdapter extends PagedListAdapter<Contact, ContactListAda
         }
     };
 
-    public ContactListAdapter() {
+    public ContactListAdapter(ContactClickListener contactClickListener) {
         super(DIFF_CALLBACK);
+        this.contactClickListener=contactClickListener;
     }
 
     @NonNull
@@ -54,10 +58,13 @@ public class ContactListAdapter extends PagedListAdapter<Contact, ContactListAda
         Glide.with(holder.imageViewProfilePic.getContext())
                 .load(R.drawable.ic_baseline_person_24)
                 .into(holder.imageViewProfilePic);
+
+
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView textViewName, textViewNumber;
         ImageView imageViewProfilePic;
@@ -67,6 +74,16 @@ public class ContactListAdapter extends PagedListAdapter<Contact, ContactListAda
             imageViewProfilePic = itemView.findViewById(R.id.image_user);
             textViewName = itemView.findViewById(R.id.name_user);
             textViewNumber = itemView.findViewById(R.id.phone_number);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            Log.d("TAGc", "onClick in Contact adapter called: " +v.getId());
+            if (contactClickListener != null)
+                contactClickListener.onContactClicked(v, getItem(getAdapterPosition()));
+
         }
     }
 }

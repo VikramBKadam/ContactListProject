@@ -12,6 +12,7 @@ import com.example.assignment.model.User;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Single;
 
 @Dao
 public interface ContactDao {
@@ -20,6 +21,9 @@ public interface ContactDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable addListOfContact(List<Contact> contactList);
+
+    @Query("SELECT * FROM ContactDB WHERE _id = :Id")
+    Single<Contact> getContactById(String Id);
 
     @Query("select * from contactdb order by name asc")
     DataSource.Factory<Integer, Contact> getAllContacts();

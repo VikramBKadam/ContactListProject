@@ -11,6 +11,7 @@ import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import com.example.assignment.R;
 import com.example.assignment.model.Contact;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
-public class Tab3 extends Fragment {
+public class Tab3 extends Fragment implements ContactClickListener{
 
     RecyclerView recyclerViewContactList;
     ContactListAdapter recyclerviewAdapter;
@@ -54,7 +55,7 @@ public class Tab3 extends Fragment {
         recyclerViewContactList = view.findViewById(R.id.contacts_recycler_view_);
         layoutManager = new LinearLayoutManager(getContext());
 
-        recyclerviewAdapter = new ContactListAdapter();
+        recyclerviewAdapter = new ContactListAdapter(this);
 
         recyclerViewContactList.setLayoutManager(layoutManager);
         recyclerViewContactList.setAdapter(recyclerviewAdapter);
@@ -97,5 +98,11 @@ public class Tab3 extends Fragment {
         super.setMenuVisibility(menuVisible);
 
         isFragmentActive = menuVisible;
+    }
+
+    @Override
+    public void onContactClicked(View view, Contact contact) {
+        Log.d("TAG","ContactClicked in Contact list fragment");
+        ((MainActivity) getActivity()).switchToViewContactFragment(contact.get_id());
     }
 }

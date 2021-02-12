@@ -1,0 +1,348 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/view_contact_fragment"
+    android:background="@color/faint"
+    >
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/image_view_user"
+                android:layout_width="100dp"
+                android:layout_gravity="center"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_baseline_person_24" />
+            <TextView
+                android:id="@+id/text_name_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:hint=" Name"
+                android:layout_marginTop="10dp"
+                android:textSize="32sp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_gravity="center"
+                android:id="@+id/single_person_contact_recyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+
+
+            <LinearLayout
+                android:id="@+id/phone_linear_layout1"
+                android:layout_width="wrap_content"
+                android:visibility="visible"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tag1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="MOBILE"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:textSize="22sp"
+                    android:id="@+id/text_phone_contact1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint=" Mobile No:"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/phone_linear_layout2"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tag2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="MOBILE"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:textSize="22sp"
+                    android:id="@+id/text_phone_contact2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint=" Mobile No:"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/phone_linear_layout3"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tag3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="MOBILE"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:textSize="22sp"
+                    android:id="@+id/text_phone_contact3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint=" Mobile No:"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/phone_linear_layout4"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tag4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="MOBILE"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:textSize="22sp"
+                    android:id="@+id/text_phone_contact4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint=" Mobile No:"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:id="@+id/phone_linear_layout5"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tag5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="MOBILE"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:textSize="22sp"
+                    android:id="@+id/text_phone_contact5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint=" Mobile No:"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/phone_linear_layout6"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tag6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="MOBILE"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:textSize="22sp"
+                    android:id="@+id/text_phone_contact6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint=" Mobile No:"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/phone_linear_layout7"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tag7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="MOBILE"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:textSize="22sp"
+                    android:id="@+id/text_phone_contact7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint=" Mobile No:"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/phone_linear_layout8"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tag8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="MOBILE"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:textSize="22sp"
+                    android:id="@+id/text_phone_contact8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint=" Mobile No:"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tag9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="MOBILE"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:textSize="22sp"
+                    android:id="@+id/text_phone_contact9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint=" Mobile No:"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tag10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="MOBILE"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:textSize="22sp"
+                    android:id="@+id/text_phone_contact10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint=" Mobile No:"
+                    />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/show_contact_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show Contact List"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                />
+
+
+        </LinearLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</RelativeLayout>

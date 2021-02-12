@@ -17,6 +17,7 @@ import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -181,6 +182,25 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction=manager.beginTransaction();
         transaction.replace(R.id.tab2_fragment,Tab1.newInstance())
                 .commit();
+    }
+
+    public  void switchToViewContactFragment(String id){
+        FragmentManager manager=getSupportFragmentManager();
+
+        FragmentTransaction transaction=manager.beginTransaction();
+        transaction.replace(R.id.contact_list_fragment,View_Contact_Details_Fragment.newInstance(id))
+                .commit();
+
+    }
+    public  void switchToContactListfragment(){
+        Log.e("TAG","In Switch To Contact List Fragment");
+        FragmentManager manager=getSupportFragmentManager();
+
+        FragmentTransaction transaction=manager.beginTransaction();
+        Tab3 tab3=new Tab3();
+        transaction.replace(R.id.view_contact_fragment,tab3)
+                .commit();
+
     }
 
     @Override

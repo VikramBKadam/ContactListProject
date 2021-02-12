@@ -34,6 +34,7 @@ public class Tab1ViewModel extends AndroidViewModel {
     public LiveData<PagedList<User>> userList ;
     public MutableLiveData<List<User>> users = new MutableLiveData<>();
     public MutableLiveData<User> user = new MutableLiveData<>();
+    public MutableLiveData<Contact> contact = new MutableLiveData<>();
     private LocalRepository repository = new LocalRepository(getApplication());
     public LiveData<PagedList<User>> queriedUserList;
 
@@ -84,6 +85,32 @@ public class Tab1ViewModel extends AndroidViewModel {
         });
 
     }
+
+    public void fetchContactDetailsFromDatabaseById(String id){
+        repository.getContactById(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Contact>() {
+
+                    @Override
+                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@io.reactivex.annotations.NonNull Contact contact1) {
+                        contact.setValue(contact1);
+
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                        e.printStackTrace();
+
+                    }
+                });
+
+    }
+
     public void fetchDetailsFromDatabase(int id){
         repository.getUserById(id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -170,6 +197,7 @@ public class Tab1ViewModel extends AndroidViewModel {
     public LiveData<User> getUser() {
         return user;
     }
+    public LiveData<Contact>getContact(){return contact;}
 
     public void queryInit(String query) {
 

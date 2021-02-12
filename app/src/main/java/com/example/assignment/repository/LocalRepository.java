@@ -44,6 +44,10 @@ public class LocalRepository {
 
     }
 
+    public Single<Contact>getContactById(String id){
+        return contactDao.getContactById(id);
+    }
+
     public DataSource.Factory<Integer, User> queryAllUser(String query) {
         return userDao.queryAllUser(query);
     }
