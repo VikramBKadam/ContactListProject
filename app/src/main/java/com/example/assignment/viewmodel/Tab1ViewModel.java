@@ -37,6 +37,14 @@ public class Tab1ViewModel extends AndroidViewModel {
     public MutableLiveData<Contact> contact = new MutableLiveData<>();
     private LocalRepository repository = new LocalRepository(getApplication());
     public LiveData<PagedList<User>> queriedUserList;
+    private static MutableLiveData<Integer> totalContacts=new MutableLiveData<>();
+    public static void settotalContact(int totalNoContacts) {
+        totalContacts.setValue(totalNoContacts);
+    }
+    public LiveData<Integer> getTotalContacts() {
+        return totalContacts;
+    }
+
 
     public static MutableLiveData<String> queryString = new MutableLiveData<>();
     public static void setQueryString(String query) {
@@ -242,6 +250,7 @@ public class Tab1ViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.annotations.NonNull List<Contact> contactList) {
                         Log.e(TAG, "onSuccess: Inside complete sync   -->>  "+contactList.size()   );
+                     // settotalContact(contactList.size());
                     }
 
                     @Override

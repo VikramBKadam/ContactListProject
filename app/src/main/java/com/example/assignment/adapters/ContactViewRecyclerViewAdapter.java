@@ -21,14 +21,19 @@ import java.util.List;
 public class ContactViewRecyclerViewAdapter extends RecyclerView.Adapter<ContactViewRecyclerViewAdapter.MyViewHolder> {
   //  private ArrayList<SingleContact> singlePersonContactList;
     private ArrayList<String> singlePersonContactList;
+    private ArrayList<String> singlePersonContactTypeList;
 
-    public ContactViewRecyclerViewAdapter(ArrayList<String> singlePersonContactList) {
+    public ContactViewRecyclerViewAdapter(ArrayList<String> singlePersonContactList,ArrayList<String> singlePersonContactTypeList) {
         this.singlePersonContactList = singlePersonContactList;
+        this.singlePersonContactTypeList=singlePersonContactTypeList;
+
     }
 
-    public void updateSinglePersonContactList(List<String> newsinglePersonContactList) {
+    public void updateSinglePersonContactList(List<String> newsinglePersonContactList,List<String>newsinglePersonContactTypeList) {
         singlePersonContactList.clear();
+        singlePersonContactTypeList.clear();
         singlePersonContactList.addAll(newsinglePersonContactList);
+        singlePersonContactTypeList.addAll(newsinglePersonContactTypeList);
         notifyDataSetChanged();
     }
 
@@ -42,8 +47,10 @@ public class ContactViewRecyclerViewAdapter extends RecyclerView.Adapter<Contact
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         String singleContact=singlePersonContactList.get(position);
+        String singleContactType=singlePersonContactTypeList.get(position);
 
         holder.contactNumber.setText(singleContact);
+       holder.contactType.setText(singleContactType+" : ");
 
     }
 
@@ -54,11 +61,12 @@ public class ContactViewRecyclerViewAdapter extends RecyclerView.Adapter<Contact
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView contactNumber;
+        TextView contactNumber,contactType;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             contactNumber=itemView.findViewById(R.id.textview_contactnumber);
+            contactType=itemView.findViewById(R.id.textview_contacttype);
 
 
 

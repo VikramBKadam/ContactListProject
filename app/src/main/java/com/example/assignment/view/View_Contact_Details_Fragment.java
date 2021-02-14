@@ -28,16 +28,16 @@ import butterknife.BindView;
 
 public class View_Contact_Details_Fragment extends Fragment {
     RecyclerView recyclerView;
-    private ContactViewRecyclerViewAdapter contactViewRecyclerViewAdapter = new ContactViewRecyclerViewAdapter (new ArrayList<>());
+    private ContactViewRecyclerViewAdapter contactViewRecyclerViewAdapter = new ContactViewRecyclerViewAdapter (new ArrayList<>(),new ArrayList<>());
 
     String id;
     Tab1ViewModel mViewModel;
     TextView contactName;
-    /*TextView contactName,contactNumber1,contactNumber2,contactNumber3,contactnumber4,contactNumber5,contactNumber6,contactNumber7
-            ,contactNumber8,contactNumber9,contactNumber10;*/
+
+
+
     Button showContactList;
-  /*  LinearLayout linearLayout1,linearLayout2,linearLayout3,linearLayout4,linearLayout5,linearLayout6,linearLayout7,
-    linearLayout8,linearLayout9,linearLayout10;*/
+
 
 
 
@@ -80,7 +80,7 @@ public class View_Contact_Details_Fragment extends Fragment {
 
         mViewModel= ViewModelProviders.of(getActivity()).get(Tab1ViewModel.class);
         contactName=view.findViewById(R.id.text_name_contact);
-       // contactNumber1=view.findViewById(R.id.text_phone_contact1);
+
         showContactList=view.findViewById(R.id.show_contact_list);
             showContactList.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,7 +102,7 @@ public class View_Contact_Details_Fragment extends Fragment {
                     ArrayList<SingleContact>singleContactList=new ArrayList<>();
                     //singleContactList.a
 
-                    contactViewRecyclerViewAdapter.updateSinglePersonContactList(contact.getNumber());
+                    contactViewRecyclerViewAdapter.updateSinglePersonContactList(contact.getNumber(),contact.getNumberType());
                    // contactNumber1.setText(contact.getNumber());
 
 

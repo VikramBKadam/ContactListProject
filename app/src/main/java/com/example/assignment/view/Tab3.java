@@ -24,7 +24,7 @@ import com.example.assignment.viewmodel.Tab1ViewModel;
 
 public class Tab3 extends Fragment implements ContactClickListener{
 
-    TextView textView;
+    TextView totalContacts;
 
     RecyclerView recyclerViewContactList;
     ContactListAdapter recyclerviewAdapter;
@@ -56,8 +56,15 @@ public class Tab3 extends Fragment implements ContactClickListener{
 
 
     private void init(View view) {
-        textView=view.findViewById(R.id.total_contacts);
-        textView.setText(String.valueOf("Total Contacts : "+SyncNativeContacts.count));
+        totalContacts=view.findViewById(R.id.total_contacts);
+        fragmentViewModel.getTotalContacts().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                totalContacts.setText("Total Contacts : "+ String.valueOf(integer));
+
+            }
+        });
+       // totalContacts.setText(String.valueOf("Total Contacts : "+));
         recyclerViewContactList = view.findViewById(R.id.contacts_recycler_view_);
         layoutManager = new LinearLayoutManager(getContext());
 
@@ -80,9 +87,11 @@ public class Tab3 extends Fragment implements ContactClickListener{
         fragmentViewModel.getQueryString().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String query) {
-                if(isFragmentActive)
-                    queryContactList(query);
+                queryContactList(query);
             }
+               /* if(isFragmentActive)
+                    queryContactList(query);
+            }*/
         });
     }
 
