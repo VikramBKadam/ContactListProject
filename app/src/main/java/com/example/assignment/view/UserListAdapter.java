@@ -97,7 +97,7 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
         }
         Pair<String, String> timeDateForCurrentUser = DateUtils.getHeaderDateAndTime(new Date(user.getCreationTime()));
         if(position > 0){
-            User prevUser = getItem(position - 1);
+            User prevUser = getItem(position -1);
             if(prevUser != null){
                 Pair<String, String> timeDateForPrevUser = DateUtils.getHeaderDateAndTime(new Date(prevUser.getCreationTime()));
                 if(timeDateForCurrentUser.first.toLowerCase().trim().equals(timeDateForPrevUser.first.toLowerCase().trim())){

@@ -52,8 +52,9 @@ public class SyncNativeContacts {
                                 new String[]{id}, null);
                         while (phoneCursor.moveToNext()) {
 
-                            String number = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) .replaceAll("\\s", "");;
-                            String type = ContactType.getContactType(phoneCursor.getInt(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE)));
+                            String number = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) .replaceAll("\\s", "");
+
+                           String type = ContactType.getContactType(phoneCursor.getInt(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE)));
                             if (number.startsWith("0"))
                                 number = "+91"+number.substring(1);
                             else if (!number.startsWith("+"))

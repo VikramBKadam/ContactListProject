@@ -35,6 +35,7 @@ import com.example.assignment.model.User;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,6 +47,7 @@ public class      Tab1 extends Fragment implements ItemClickListener{
     private Tab1ViewModel mViewModel;
     @BindView(R.id.user_recycler_view)
     RecyclerView UserList;
+    LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
     ArrayList<User> queryArrayList = new ArrayList<>();
     boolean multiSelectStatus = false;
 
@@ -75,8 +77,10 @@ public class      Tab1 extends Fragment implements ItemClickListener{
         super.onViewCreated(view, savedInstanceState);
         mViewModel= ViewModelProviders.of(getActivity()).get(Tab1ViewModel.class);
         mViewModel.fetchDataFromDatabase();
+       // linearLayoutManager.setReverseLayout(true);
+       // linearLayoutManager.setStackFromEnd(true);
 
-        UserList.setLayoutManager(new LinearLayoutManager(getContext()));
+        UserList.setLayoutManager(linearLayoutManager);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(UserList);
 
         UserList.setAdapter(userListAdapter);
@@ -195,7 +199,9 @@ public class      Tab1 extends Fragment implements ItemClickListener{
 
 
     private void observeUsersDataList() {
-       mViewModel.userList.observe(this, users -> userListAdapter.submitList(users));
+       mViewModel.userList.observe(this, users ->
+
+               userListAdapter.submitList(users));
 
     }
 

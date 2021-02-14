@@ -241,6 +241,7 @@ public class Tab1ViewModel extends AndroidViewModel {
         syncNativeContacts = new SyncNativeContacts(getApplication());
         syncNativeContacts.getContactArrayList().doAfterSuccess(newlist -> addContactListToDB(newlist))
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Contact>>() {
                     @Override
                     public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
@@ -250,7 +251,8 @@ public class Tab1ViewModel extends AndroidViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.annotations.NonNull List<Contact> contactList) {
                         Log.e(TAG, "onSuccess: Inside complete sync   -->>  "+contactList.size()   );
-                     // settotalContact(contactList.size());
+                        settotalContact(contactList.size());
+
                     }
 
                     @Override

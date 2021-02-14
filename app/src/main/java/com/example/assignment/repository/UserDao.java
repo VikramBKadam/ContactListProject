@@ -18,7 +18,7 @@ public interface UserDao {
     @Insert
     Completable insert(User user);
 
-    @Query("SELECT * FROM User")
+    @Query("SELECT * FROM User ORDER BY id DESC")
     DataSource.Factory<Integer,User> getAllUser();
 
     @Query("Delete From User")
