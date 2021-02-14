@@ -1,7 +1,6 @@
 package com.example.assignment.helper;
 
 import android.provider.ContactsContract;
-
 public class ContactType {
     public static String getContactType(int type) {
         switch (type) {
