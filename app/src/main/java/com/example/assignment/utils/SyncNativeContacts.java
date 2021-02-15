@@ -1,12 +1,10 @@
-package com.example.assignment.helper;
+package com.example.assignment.utils;
 
 
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
-import android.util.Log;
 
 
 import com.example.assignment.model.Contact;
@@ -14,20 +12,16 @@ import com.example.assignment.repository.LocalRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-import io.reactivex.CompletableObserver;
 import io.reactivex.Single;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 
 public class SyncNativeContacts {
     Context context;
-    LocalRepository localRepository;
+
 
     public SyncNativeContacts(Context context) {
         this.context = context;
-        localRepository = new LocalRepository(context);
+
     }
 
     public Single<List<Contact>> getContactArrayList() {

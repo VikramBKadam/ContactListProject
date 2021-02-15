@@ -9,6 +9,8 @@ import com.example.assignment.model.User;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -16,12 +18,18 @@ public class LocalRepository {
     private Context ctx;
     private UserDao userDao;
     private ContactDao contactDao;
+    @Inject
+    public LocalRepository(UserDao userDao,ContactDao contactDao){
+        this.userDao=userDao;
+        this.contactDao=contactDao;
 
-    public LocalRepository(Context ctx){
+    }
+
+   /* public LocalRepository(Context ctx){
         this.ctx = ctx;
         userDao = UserDatabase.getInstance(ctx).userDao();
         contactDao=UserDatabase.getInstance(ctx).contactDAO();
-    }
+    }*/
 
 
     public Completable insert(User user){

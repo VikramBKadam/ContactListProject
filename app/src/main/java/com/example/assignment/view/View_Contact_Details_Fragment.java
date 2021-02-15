@@ -12,18 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.assignment.R;
 import com.example.assignment.adapters.ContactViewRecyclerViewAdapter;
 import com.example.assignment.model.SingleContact;
+import com.example.assignment.view.activities.MainActivity;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
 
 
 public class View_Contact_Details_Fragment extends Fragment {
@@ -95,7 +92,7 @@ public class View_Contact_Details_Fragment extends Fragment {
         if (getArguments() != null) {
             id = getArguments().getString("ID");
             mViewModel.fetchContactDetailsFromDatabaseById(id);
-            mViewModel.getContact().observe(this,contact -> {
+            mViewModel.getContact().observe(getViewLifecycleOwner(),contact -> {
                 if(contact!=null){
                     Log.e("TAG", contact.getName());
                     contactName.setText(contact.getName());

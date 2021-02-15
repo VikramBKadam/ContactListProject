@@ -3,6 +3,7 @@ package com.example.assignment.view;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
@@ -39,8 +40,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.assignment.R;
 import com.example.assignment.adapters.MyFragmentAdapter;
-import com.example.assignment.helper.SaveBitmap;
+import com.example.assignment.databinding.Tab2FragmentBinding;
+import com.example.assignment.utils.SaveBitmap;
 import com.example.assignment.model.User;
+import com.example.assignment.view.activities.MainActivity;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
 import java.util.Calendar;
@@ -56,49 +59,51 @@ public class Tab2 extends Fragment {
 
 
     private Tab1ViewModel mViewModel;
-    @BindView(R.id.image_view_user)
+   // @BindView(R.id.image_view_user)
     ImageView userImage;
 
+    Tab2FragmentBinding binding;
 
-    @BindView(R.id.editTextDate)
+
+  //  @BindView(R.id.editTextDate)
     TextView userBirthDay;
 
-    @BindView(R.id.editTextPersonName)
+  //  @BindView(R.id.editTextPersonName)
     EditText userName;
-    @BindView(R.id.enlarge_image)
+    //@BindView(R.id.enlarge_image)
     ImageView enlargeImage;
-    @BindView(R.id.scroll_view)
+ //   @BindView(R.id.scroll_view)
     NestedScrollView scrollView;
 
 
-    @BindView(R.id.editTextPhone)
+   // @BindView(R.id.editTextPhone)
     EditText userPhoneNumber;
-    @BindView(R.id.editTextPhone1)
+   // @BindView(R.id.editTextPhone1)
     EditText userPhoneNumber1;
-    @BindView(R.id.editTextPhone2)
+   // @BindView(R.id.editTextPhone2)
     EditText userPhoneNumber2;
-    @BindView(R.id.phone_linear_layout1)
+   // @BindView(R.id.phone_linear_layout1)
     LinearLayout phone_linear_layout1;
-    @BindView(R.id.phone_linear_layout2)
+ //   @BindView(R.id.phone_linear_layout2)
     LinearLayout phone_linear_layout2;
 
-    @BindView(R.id.pincode)
+ //   @BindView(R.id.pincode)
     EditText pincode;
-    @BindView(R.id.pincode1)
+  //  @BindView(R.id.pincode1)
     EditText pincode1;
-    @BindView(R.id.pincode2)
+ //   @BindView(R.id.pincode2)
     EditText pincode2;
 
-    @BindView(R.id.button)
+    //@BindView(R.id.button)
     Button button;
-    @BindView(R.id.edit_details)
+   // @BindView(R.id.edit_details)
     Button editDetails;
-    @BindView(R.id.date_picker)
+    //@BindView(R.id.date_picker)
     TextView datePick;
-    @BindView(R.id.buttonAddProfilePic)
+   // @BindView(R.id.buttonAddProfilePic)
     Button addProfilePic;
 
-    @BindView(R.id.edit_details_done)
+  //  @BindView(R.id.edit_details_done)
     Button editDetailsDone;
 
     String ProfilePicPath;
@@ -134,14 +139,48 @@ public class Tab2 extends Fragment {
             int id = getArguments().getInt("ID");
             Log.d("Tag", String.valueOf(id));
 
+
         }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab2_fragment, container, false);
-        ButterKnife.bind(this, view);
+        //View view = inflater.inflate(R.layout.tab2_fragment, container, false);
+        Tab2FragmentBinding binding=DataBindingUtil.inflate(inflater,R.layout.tab2_fragment,container,false);
+          View view=binding.getRoot();
+       this.binding=binding;
+
+
+       // ButterKnife.bind(this,view);
+
+
+
+        phone_linear_layout1=view.findViewById(R.id.phone_linear_layout1);
+        phone_linear_layout2=view.findViewById(R.id.phone_linear_layout2);
+        pincode=view.findViewById(R.id.pincode);
+        pincode1=view.findViewById(R.id.pincode1);
+        pincode2=view.findViewById(R.id.pincode2);
+
+        editDetails=view.findViewById(R.id.edit_details);
+
+        userImage=view.findViewById(R.id.image_view_user);
+        userBirthDay=view.findViewById(R.id.editTextDate);
+        userName=view.findViewById(R.id.editTextPersonName);
+        scrollView=view.findViewById(R.id.scroll_view);
+
+
+        userPhoneNumber=view.findViewById(R.id.editTextPhone);
+        userPhoneNumber1=view.findViewById(R.id.editTextPhone1);
+        userPhoneNumber2=view.findViewById(R.id.editTextPhone2);
+        button=view.findViewById(R.id.button);
+
+
+        addProfilePic=view.findViewById(R.id.buttonAddProfilePic);
+        editDetailsDone=view.findViewById(R.id.edit_details_done);
+
+        enlargeImage= view.findViewById(R.id.enlarge_image);
+        datePick=view.findViewById(R.id.date_picker);
         mViewModel= ViewModelProviders.of(getActivity()).get(Tab1ViewModel.class);
 
         if (getArguments() != null) {
@@ -159,7 +198,8 @@ public class Tab2 extends Fragment {
             datePick.setVisibility(View.GONE);
             userName.setEnabled(false);
             mViewModel.fetchDetailsFromDatabase(id);
-            mViewModel.getUser().observe(this, user -> {
+            mViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
+                binding.setUser(user);
               /*  userImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -182,26 +222,26 @@ public class Tab2 extends Fragment {
                 } else {
                     userImage.setImageResource(R.drawable.ic_baseline_person_24);
                 }
-                userName.setText(user.getName());
-                userPhoneNumber.setText(user.getPhoneNumber().substring(3));
-                pincode.setText(user.getPhoneNumber().substring(0,3));
+               // userName.setText(user.getName());
+              //  userPhoneNumber.setText(user.getPhoneNumber().substring(3));
+                //pincode.setText(user.getPhoneNumber().substring(0,3));
 
                 Log.d("TAG", user.getPhoneNumber());
                 if (user.getPhoneNumber2() != null) {
 
                     phone_linear_layout1.setVisibility(View.VISIBLE);
-                    userPhoneNumber1.setText(user.getPhoneNumber2().substring(3));
-                    pincode1.setText(user.getPhoneNumber2().substring(0,3));
+                 //   userPhoneNumber1.setText(user.getPhoneNumber2().substring(3));
+                 //   pincode1.setText(user.getPhoneNumber2().substring(0,3));
                 }
                 if (user.getPhoneNumber3() != null) {
 
                     phone_linear_layout2.setVisibility(View.VISIBLE);
-                    userPhoneNumber2.setText(user.getPhoneNumber3().substring(3));
+                   // userPhoneNumber2.setText(user.getPhoneNumber3().substring(3));
                     Log.e("TAG1", user.getPhoneNumber3().substring(3) );
-                    pincode2.setText(user.getPhoneNumber3().substring(0,3));
+                  //  pincode2.setText(user.getPhoneNumber3().substring(0,3));
                 }
 
-                userBirthDay.setText(user.getBirthday());
+              //  userBirthDay.setText(user.getBirthday());
 
 
 
@@ -272,7 +312,7 @@ public class Tab2 extends Fragment {
 
         mViewModel.fetchDetailsFromDatabase(id);
 
-        mViewModel.getUser().observe(this,user -> {
+        mViewModel.getUser().observe(getViewLifecycleOwner(),user -> {
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

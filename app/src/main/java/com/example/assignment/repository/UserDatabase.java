@@ -16,7 +16,7 @@ import com.example.assignment.model.User;
 public abstract class UserDatabase extends RoomDatabase {
 
     private static UserDatabase instance;
-    static Migration migration = new Migration(1,2) {
+   /* static Migration migration = new Migration(1,2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
@@ -37,7 +37,7 @@ public abstract class UserDatabase extends RoomDatabase {
                     .build();
         }
         return instance;
-    }
+    }*/
 
     public abstract UserDao userDao();
     public abstract ContactDao contactDAO();

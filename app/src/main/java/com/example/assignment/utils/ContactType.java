@@ -1,4 +1,4 @@
-package com.example.assignment.helper;
+package com.example.assignment.utils;
 
 import android.provider.ContactsContract;
 public class ContactType {
@@ -11,7 +11,7 @@ public class ContactType {
                 return "Mobile";
 
             case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-                return "Work";
+                return "Work"; 
 
             case ContactsContract.CommonDataKinds.Phone.TYPE_FAX_HOME:
                 return "Home Fax";

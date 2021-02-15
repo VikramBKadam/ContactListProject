@@ -1,4 +1,4 @@
-package com.example.assignment.view;
+package com.example.assignment.interfaces;
 
 import android.view.View;
 

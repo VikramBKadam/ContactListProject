@@ -5,7 +5,6 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,37 +14,36 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.example.assignment.R;
+import com.example.assignment.adapters.UserListAdapter;
+import com.example.assignment.interfaces.ItemClickListener;
 import com.example.assignment.model.User;
+import com.example.assignment.view.activities.DetailActivity;
+import com.example.assignment.view.activities.EditActivity;
+import com.example.assignment.view.activities.MainActivity;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class      Tab1 extends Fragment implements ItemClickListener{
+public class Tab1 extends Fragment implements ItemClickListener {
 
     private Tab1ViewModel mViewModel;
-    @BindView(R.id.user_recycler_view)
+   // @BindView(R.id.user_recycler_view)
     RecyclerView UserList;
     LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
     ArrayList<User> queryArrayList = new ArrayList<>();
@@ -79,6 +77,7 @@ public class      Tab1 extends Fragment implements ItemClickListener{
         mViewModel.fetchDataFromDatabase();
        // linearLayoutManager.setReverseLayout(true);
        // linearLayoutManager.setStackFromEnd(true);
+        UserList =(RecyclerView)view.findViewById(R.id.user_recycler_view);
 
         UserList.setLayoutManager(linearLayoutManager);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(UserList);
@@ -94,7 +93,7 @@ public class      Tab1 extends Fragment implements ItemClickListener{
     }
 
     private void observeMultiSelectStatus() {
-        mViewModel.getIsMultiSelectOn().observe(this, new Observer<Boolean>() {
+        mViewModel.getIsMultiSelectOn().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 multiSelectStatus = aBoolean;
@@ -102,7 +101,7 @@ public class      Tab1 extends Fragment implements ItemClickListener{
         });
     }
     private void observeQueryString() {
-        mViewModel.getQueryString().observe(this, new Observer<String>() {
+        mViewModel.getQueryString().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String query) {
                 Log.d("TAG", "Inside Tab1Fragment: " + query);
@@ -151,7 +150,7 @@ public class      Tab1 extends Fragment implements ItemClickListener{
 
             if( userList!=null){
                 User user=userList.get(viewHolder.getAdapterPosition());
-                final CharSequence[] options = { "View Details", "Edit","Delete","Cancel"};
+                final CharSequence[] options = { "View Details","Delete","Cancel"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Options");
@@ -162,18 +161,14 @@ public class      Tab1 extends Fragment implements ItemClickListener{
                     public void onClick(DialogInterface dialog, int item) {
 
                         if (options[item].equals("View Details")) {
-                            Intent intent =new Intent(getActivity(),DetailActivity.class);
+                         /*   Intent intent =new Intent(getActivity(), DetailActivity.class);*/
+                            ((MainActivity) getActivity()).switchTodetailfragment(user.getId());
 
-                            intent.putExtra("ID",String.valueOf(user.getId()));
-                            getActivity().startActivity(intent);
+                           /* intent.putExtra("ID",String.valueOf(user.getId()));
+                            getActivity().startActivity(intent);*/
 
 
-                        } else if (options[item].equals("Edit")) {
-                            Intent intent =new Intent(getActivity(),EditActivity.class);
-                            intent.putExtra("ID",String.valueOf(user.getId()));
-                            getActivity().startActivity(intent);
-
-                        } else if(options[item].equals("Delete")){
+                        }  else if(options[item].equals("Delete")){
                             mViewModel.deleteUserFromDatabase(user.getId());
 
                         } else if (options[item].equals("Cancel")) {

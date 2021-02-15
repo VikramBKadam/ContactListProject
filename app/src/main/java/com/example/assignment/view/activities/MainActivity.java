@@ -1,4 +1,4 @@
-package com.example.assignment.view;
+package com.example.assignment.view.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
@@ -26,13 +27,21 @@ import android.widget.Toast;
 
 import com.example.assignment.R;
 import com.example.assignment.adapters.MyFragmentAdapter;
-import com.example.assignment.helper.AndroidContactsChangeListener;
-import com.example.assignment.helper.SyncNativeContacts;
+import com.example.assignment.utils.AndroidContactsChangeListener;
+import com.example.assignment.utils.SyncNativeContacts;
+import com.example.assignment.view.Tab1;
+import com.example.assignment.view.Tab2;
+import com.example.assignment.view.Tab3;
+import com.example.assignment.view.View_Contact_Details_Fragment;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 import com.google.android.material.tabs.TabLayout;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     ContentResolver contentResolver;
+
 
     TabLayout tabLayout;
     Toolbar toolbar;
@@ -40,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
     MyFragmentAdapter adapter;
     private final int READ_CONTACT_REQUEST_CODE = 100;
     SyncNativeContacts syncNativeContacts;
-    Tab1ViewModel fragmentViewModel;
+
+    Tab1ViewModel fragmentViewModel  ;
 
 
     AndroidContactsChangeListener.IChangeListener contactChangeListener = new AndroidContactsChangeListener.IChangeListener() {
@@ -57,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fragmentViewModel = ViewModelProviders.of(this).get(Tab1ViewModel.class);
+        fragmentViewModel=new ViewModelProvider(this).get(Tab1ViewModel.class);
+       // fragmentViewModel = ViewModelProviders.of(this).get(Tab1ViewModel.class);
         init();
     }
 
@@ -173,14 +184,14 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager=getSupportFragmentManager();
 
         FragmentTransaction transaction=manager.beginTransaction();
-        transaction.replace(R.id.tab1fragment,Tab2.Tab2Instance(id)).addToBackStack("tag")
+        transaction.replace(R.id.tab1fragment, Tab2.Tab2Instance(id)).addToBackStack("tag")
                 .commit();
     }
     public void  switchToTab1fragment(){
         FragmentManager manager=getSupportFragmentManager();
 
         FragmentTransaction transaction=manager.beginTransaction();
-        transaction.replace(R.id.tab2_fragment,Tab1.newInstance())
+        transaction.replace(R.id.tab2_fragment, Tab1.newInstance())
                 .commit();
     }
 
@@ -188,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager=getSupportFragmentManager();
 
         FragmentTransaction transaction=manager.beginTransaction();
-        transaction.replace(R.id.contact_list_fragment,View_Contact_Details_Fragment.newInstance(id))
+        transaction.replace(R.id.contact_list_fragment, View_Contact_Details_Fragment.newInstance(id))
                 .commit();
 
     }

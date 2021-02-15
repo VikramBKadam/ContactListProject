@@ -1,11 +1,10 @@
-package com.example.assignment.view;
+package com.example.assignment.view.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -139,7 +137,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 viewModel.deleteUserFromDatabase(Integer.parseInt(id));
                 finish();
-                 intent =new Intent(this,MainActivity.class);
+                 intent =new Intent(this, MainActivity.class);
                 startActivity(intent);
 
                 Toast.makeText(this, "Delete Clicked", Toast.LENGTH_SHORT).show();
@@ -152,7 +150,7 @@ public class DetailActivity extends AppCompatActivity {
                 editTextViewPhone.setVisibility(View.VISIBLE);
                 editTextViewBirthday.setVisibility(View.VISIBLE);*/
 
-                  intent =new Intent(this,EditActivity.class);
+                  intent =new Intent(this, EditActivity.class);
 
                 id=getIntent().getStringExtra("ID");
 

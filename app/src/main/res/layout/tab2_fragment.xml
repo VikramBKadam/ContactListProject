@@ -1,8 +1,19 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="user"
+            type="com.example.assignment.model.User" />
+
+
+    </data>
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/tab2_fragment"
     android:background="@color/faint">
+
+
 
     <ImageView
         android:background="@color/faint"
@@ -55,6 +66,7 @@
                 android:id="@+id/editTextPersonName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{user.name}"
 
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
@@ -76,6 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:digits="1234567890+"
+                    android:text="@{user.phoneNumber.substring(0,3)}"
                     android:hint="+91"
                     android:maxLength="3" />
 
@@ -83,6 +96,7 @@
                     android:id="@+id/editTextPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{user.phoneNumber.substring(3)}"
 
                     android:ems="10"
                     android:hint="Enter Mobile No:"
@@ -102,9 +116,11 @@
 
                 <EditText
                     android:id="@+id/pincode1"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:digits="1234567890+"
+                    android:text="@{user.phoneNumber2.substring(0,3)}"
                     android:hint="+91"
                     android:maxLength="3" />
 
@@ -113,6 +129,7 @@
                     android:id="@+id/editTextPhone1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{user.phoneNumber2.substring(3)}"
 
                     android:ems="10"
                     android:hint="Enter Mobile No:"
@@ -137,6 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:digits="1234567890+"
+                    android:text="@{user.phoneNumber3.substring(0,3)}"
                     android:hint="+91"
                     android:maxLength="3" />
 
@@ -145,6 +163,7 @@
                     android:id="@+id/editTextPhone2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{user.phoneNumber3.substring(3)}"
 
 
                     android:ems="10"
@@ -172,6 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:text="@{user.birthday}"
 
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
@@ -204,3 +224,4 @@
 
 
 </RelativeLayout>
+</layout>

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +17,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.assignment.R;
-import com.example.assignment.helper.SyncNativeContacts;
+import com.example.assignment.adapters.ContactListAdapter;
+import com.example.assignment.interfaces.ContactClickListener;
 import com.example.assignment.model.Contact;
+import com.example.assignment.view.activities.MainActivity;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
-public class Tab3 extends Fragment implements ContactClickListener{
+public class Tab3 extends Fragment implements ContactClickListener {
 
     TextView totalContacts;
 

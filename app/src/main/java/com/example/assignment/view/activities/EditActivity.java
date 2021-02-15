@@ -1,4 +1,4 @@
-package com.example.assignment.view;
+package com.example.assignment.view.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment.R;
-import com.example.assignment.helper.SaveBitmap;
+import com.example.assignment.utils.SaveBitmap;
 import com.example.assignment.viewmodel.Tab1ViewModel;
 
 import java.util.Calendar;
@@ -144,7 +144,7 @@ public class EditActivity extends AppCompatActivity {
                     }
                   //  viewModel.updateUser(name,birthday,phoneNumber,ProfilePicUri,Integer.parseInt(id));
                    Toast.makeText(EditActivity.this, "Successfully Edited", Toast.LENGTH_SHORT).show();
-                    Intent intent =new Intent(EditActivity.this,MainActivity.class);
+                    Intent intent =new Intent(EditActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
             });

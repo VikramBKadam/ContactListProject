@@ -1,7 +1,5 @@
-package com.example.assignment.view;
+package com.example.assignment.adapters;
 
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -9,29 +7,23 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedListAdapter;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.DiffUtil.ItemCallback;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment.R;
-import com.example.assignment.helper.DateUtils;
+import com.example.assignment.utils.DateUtils;
 import com.example.assignment.model.User;
+import com.example.assignment.interfaces.ItemClickListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -121,17 +113,22 @@ public class UserListAdapter extends PagedListAdapter<User,UserListAdapter.MyVie
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-        @BindView(R.id.name_user)
+       // @BindView(R.id.name_user)
         TextView userName;
-        @BindView(R.id.image_user)
+      //  @BindView(R.id.image_user)
         ImageView userImage;
-        @BindView(R.id.phone_number)
+      //  @BindView(R.id.phone_number)
         TextView phone;
-        @BindView(R.id.txtHeader)
+     //   @BindView(R.id.txtHeader)
         TextView txtHeader;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            userName=itemView.findViewById(R.id.name_user);
+            userImage=itemView.findViewById(R.id.image_user);
+            phone=itemView.findViewById(R.id.phone_number);
+            txtHeader=itemView.findViewById(R.id.txtHeader);
+
             itemView.setOnClickListener(this);
 
             itemView.setOnLongClickListener(this);

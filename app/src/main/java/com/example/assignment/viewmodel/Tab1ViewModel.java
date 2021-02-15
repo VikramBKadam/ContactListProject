@@ -7,23 +7,27 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
-import com.example.assignment.helper.SyncNativeContacts;
+import com.example.assignment.utils.SyncNativeContacts;
 import com.example.assignment.model.Contact;
 import com.example.assignment.model.User;
 import com.example.assignment.repository.LocalRepository;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.CompletableObserver;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
+@HiltViewModel
 public class Tab1ViewModel extends AndroidViewModel {
     public LiveData<PagedList<Contact>> contactList;
     public LiveData<PagedList<Contact>> queryContactList;
@@ -35,7 +39,8 @@ public class Tab1ViewModel extends AndroidViewModel {
     public MutableLiveData<List<User>> users = new MutableLiveData<>();
     public MutableLiveData<User> user = new MutableLiveData<>();
     public MutableLiveData<Contact> contact = new MutableLiveData<>();
-    private LocalRepository repository = new LocalRepository(getApplication());
+   // private LocalRepository repository = new LocalRepository(getApplication());
+   private LocalRepository repository;
     public LiveData<PagedList<User>> queriedUserList;
     private static MutableLiveData<Integer> totalContacts=new MutableLiveData<>();
     public static void settotalContact(int totalNoContacts) {
@@ -56,8 +61,11 @@ public class Tab1ViewModel extends AndroidViewModel {
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
-    public Tab1ViewModel(@NonNull Application application) {
+    @Inject
+    public Tab1ViewModel(@NonNull Application application,LocalRepository repository) {
         super(application);
+        this.repository=repository;
+
     }
 
 
@@ -218,7 +226,7 @@ public class Tab1ViewModel extends AndroidViewModel {
     }
 
     public void contactInit() {
-        repository = new LocalRepository(getApplication());
+       // repository = new LocalRepository(getApplication());
 
         PagedList.Config config = (new PagedList.Config.Builder()).setEnablePlaceholders(false)
                 .setInitialLoadSizeHint(10)
@@ -228,7 +236,7 @@ public class Tab1ViewModel extends AndroidViewModel {
     }
 
     public void queryContactInit(String query) {
-        repository = new LocalRepository(getApplication());
+      //  repository = new LocalRepository(getApplication());
 
         PagedList.Config config = (new PagedList.Config.Builder()).setEnablePlaceholders(false)
                 .setInitialLoadSizeHint(10)

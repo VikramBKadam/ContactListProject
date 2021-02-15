@@ -1,4 +1,4 @@
-package com.example.assignment.helper;
+package com.example.assignment.utils;
 
 import android.os.Build;
 import android.util.Pair;
