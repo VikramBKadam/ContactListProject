@@ -90,6 +90,7 @@ public class Tab1 extends Fragment implements ItemClickListener {
         observeQueryString();
         observeUsersDataList();
         observeMultiSelectStatus();
+        observeRecyclerViewPosition();
     }
 
     private void observeMultiSelectStatus() {
@@ -109,6 +110,25 @@ public class Tab1 extends Fragment implements ItemClickListener {
             }
         });
     }
+
+    private void observeRecyclerViewPosition() {
+        userListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                UserList.scrollToPosition(positionStart);
+                super.onItemRangeInserted(positionStart, itemCount);
+                userListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                userListAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
 
     private void queryChatList(String query) {
         query = "%" + query + "%";
@@ -194,7 +214,7 @@ public class Tab1 extends Fragment implements ItemClickListener {
 
 
     private void observeUsersDataList() {
-       mViewModel.userList.observe(this, users ->
+       mViewModel.userList.observe(getViewLifecycleOwner(), users ->
 
                userListAdapter.submitList(users));
 
