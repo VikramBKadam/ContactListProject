@@ -110,7 +110,6 @@ public class Tab1 extends Fragment implements ItemClickListener {
             }
         });
     }
-
     private void observeRecyclerViewPosition() {
         userListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
 
