@@ -26,10 +26,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment.R;
-import com.example.assignment.viewmodel.Tab1ViewModel;
+import com.example.assignment.viewmodel.MyViewModel;
 
 public class DetailActivity extends AppCompatActivity {
-    Tab1ViewModel viewModel;
+    MyViewModel myViewModel;
     Toolbar toolbar;
 
     String id;
@@ -54,7 +54,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
 
-        viewModel= ViewModelProviders.of(this).get(Tab1ViewModel.class);
+        myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
 
         toolbar=findViewById(R.id.tool_bar);
         toolbar.setTitle("User Details");
@@ -70,8 +70,8 @@ public class DetailActivity extends AppCompatActivity {
 
 
         id=getIntent().getStringExtra("ID");
-        viewModel.fetchDetailsFromDatabase(Integer.parseInt(id));
-        viewModel.getUser().observe(this,user -> {
+        myViewModel.fetchDetailsFromDatabase(Integer.parseInt(id));
+        myViewModel.getUser().observe(this, user -> {
             if(user.getImage()!=null){
                 Glide.with(this).load(Uri.parse(user.getImage()))
                         .placeholder(R.drawable.ic_baseline_person_24)
@@ -135,7 +135,7 @@ public class DetailActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.delete:
 
-                viewModel.deleteUserFromDatabase(Integer.parseInt(id));
+                myViewModel.deleteUserFromDatabase(Integer.parseInt(id));
                 finish();
                  intent =new Intent(this, MainActivity.class);
                 startActivity(intent);

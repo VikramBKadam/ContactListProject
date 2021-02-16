@@ -3,12 +3,11 @@ package com.example.assignment.adapters;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.assignment.view.Tab1;
-import com.example.assignment.view.Tab2;
-import com.example.assignment.view.Tab3;
+import com.example.assignment.view.CreateEntryFragment;
+import com.example.assignment.view.UserListFragment;
+import com.example.assignment.view.ContactListFragment;
 
 public class MyFragmentAdapter extends FragmentStatePagerAdapter {
     public MyFragmentAdapter(@NonNull FragmentManager fm) {
@@ -21,10 +20,10 @@ public class MyFragmentAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 1: return new Tab2();
-            case 2: return new Tab3();
+            case 1: return new CreateEntryFragment();
+            case 2: return new ContactListFragment();
 
-            default: return new Tab1();
+            default: return new UserListFragment();
         }
 
     }

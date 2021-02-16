@@ -21,16 +21,16 @@ import com.example.assignment.adapters.ContactListAdapter;
 import com.example.assignment.interfaces.ContactClickListener;
 import com.example.assignment.model.Contact;
 import com.example.assignment.view.activities.MainActivity;
-import com.example.assignment.viewmodel.Tab1ViewModel;
+import com.example.assignment.viewmodel.MyViewModel;
 
-public class Tab3 extends Fragment implements ContactClickListener {
+public class ContactListFragment extends Fragment implements ContactClickListener {
 
     TextView totalContacts;
 
     RecyclerView recyclerViewContactList;
     ContactListAdapter recyclerviewAdapter;
     RecyclerView.LayoutManager layoutManager;
-    Tab1ViewModel fragmentViewModel;
+    MyViewModel fragmentMyViewModel;
 
     boolean isFragmentActive = false;
 
@@ -38,7 +38,7 @@ public class Tab3 extends Fragment implements ContactClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fragmentViewModel = new ViewModelProvider(getActivity()).get(Tab1ViewModel.class);
+        fragmentMyViewModel = new ViewModelProvider(getActivity()).get(MyViewModel.class);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Tab3 extends Fragment implements ContactClickListener {
 
         init(view);
 
-        fragmentViewModel.contactInit();
+        fragmentMyViewModel.contactInit();
         observeContactDB();
 
         observeQueryString();
@@ -58,7 +58,7 @@ public class Tab3 extends Fragment implements ContactClickListener {
 
     private void init(View view) {
         totalContacts=view.findViewById(R.id.total_contacts);
-        fragmentViewModel.getTotalContacts().observe(this, new Observer<Integer>() {
+        fragmentMyViewModel.getTotalContacts().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 totalContacts.setText("Total Contacts : "+ String.valueOf(integer));
@@ -76,7 +76,7 @@ public class Tab3 extends Fragment implements ContactClickListener {
     }
 
     private void observeContactDB() {
-        fragmentViewModel.contactList.observe(getViewLifecycleOwner(), new Observer<PagedList<Contact>>() {
+        fragmentMyViewModel.contactList.observe(getViewLifecycleOwner(), new Observer<PagedList<Contact>>() {
             @Override
             public void onChanged(PagedList<Contact> contacts) {
                 recyclerviewAdapter.submitList(contacts);
@@ -85,7 +85,7 @@ public class Tab3 extends Fragment implements ContactClickListener {
     }
 
     private void observeQueryString() {
-        fragmentViewModel.getQueryString().observe(getViewLifecycleOwner(), new Observer<String>() {
+        fragmentMyViewModel.getQueryString().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String query) {
                 queryContactList(query);
@@ -99,9 +99,9 @@ public class Tab3 extends Fragment implements ContactClickListener {
     private void queryContactList(String query) {
         query = "%" + query + "%";
 
-        fragmentViewModel.queryContactInit(query);
+        fragmentMyViewModel.queryContactInit(query);
 
-        fragmentViewModel.queryContactList.observe(this, new Observer<PagedList<Contact>>() {
+        fragmentMyViewModel.queryContactList.observe(this, new Observer<PagedList<Contact>>() {
             @Override
             public void onChanged(PagedList<Contact> contacts) {
                 recyclerviewAdapter.submitList(contacts);

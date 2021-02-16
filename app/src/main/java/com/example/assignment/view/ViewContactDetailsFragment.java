@@ -16,19 +16,19 @@ import android.widget.TextView;
 
 import com.example.assignment.R;
 import com.example.assignment.adapters.ContactViewRecyclerViewAdapter;
-import com.example.assignment.model.SingleContact;
+
 import com.example.assignment.view.activities.MainActivity;
-import com.example.assignment.viewmodel.Tab1ViewModel;
+import com.example.assignment.viewmodel.MyViewModel;
 
 import java.util.ArrayList;
 
 
-public class View_Contact_Details_Fragment extends Fragment {
+public class ViewContactDetailsFragment extends Fragment {
     RecyclerView recyclerView;
     private ContactViewRecyclerViewAdapter contactViewRecyclerViewAdapter = new ContactViewRecyclerViewAdapter (new ArrayList<>(),new ArrayList<>());
 
     String id;
-    Tab1ViewModel mViewModel;
+    MyViewModel mMyViewModel;
     TextView contactName;
 
 
@@ -42,14 +42,14 @@ public class View_Contact_Details_Fragment extends Fragment {
 
 
 
-    public View_Contact_Details_Fragment() {
+    public ViewContactDetailsFragment() {
         // Required empty public constructor
     }
 
 
 
-    public static View_Contact_Details_Fragment newInstance(String id) {
-        View_Contact_Details_Fragment fragment = new View_Contact_Details_Fragment();
+    public static ViewContactDetailsFragment newInstance(String id) {
+        ViewContactDetailsFragment fragment = new ViewContactDetailsFragment();
         Bundle args = new Bundle();
         args.putString("ID",id);
         fragment.setArguments(args);
@@ -75,7 +75,7 @@ public class View_Contact_Details_Fragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(contactViewRecyclerViewAdapter);
 
-        mViewModel= ViewModelProviders.of(getActivity()).get(Tab1ViewModel.class);
+        mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
         contactName=view.findViewById(R.id.text_name_contact);
 
         showContactList=view.findViewById(R.id.show_contact_list);
@@ -91,12 +91,12 @@ public class View_Contact_Details_Fragment extends Fragment {
 
         if (getArguments() != null) {
             id = getArguments().getString("ID");
-            mViewModel.fetchContactDetailsFromDatabaseById(id);
-            mViewModel.getContact().observe(getViewLifecycleOwner(),contact -> {
+            mMyViewModel.fetchContactDetailsFromDatabaseById(id);
+            mMyViewModel.getContact().observe(getViewLifecycleOwner(), contact -> {
                 if(contact!=null){
                     Log.e("TAG", contact.getName());
                     contactName.setText(contact.getName());
-                    ArrayList<SingleContact>singleContactList=new ArrayList<>();
+
                     //singleContactList.a
 
                     contactViewRecyclerViewAdapter.updateSinglePersonContactList(contact.getNumber(),contact.getNumberType());

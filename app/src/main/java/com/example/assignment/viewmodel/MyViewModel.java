@@ -28,7 +28,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 @HiltViewModel
-public class Tab1ViewModel extends AndroidViewModel {
+public class MyViewModel extends AndroidViewModel {
     public LiveData<PagedList<Contact>> contactList;
     public LiveData<PagedList<Contact>> queryContactList;
     SyncNativeContacts syncNativeContacts;
@@ -62,7 +62,7 @@ public class Tab1ViewModel extends AndroidViewModel {
     private CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
-    public Tab1ViewModel(@NonNull Application application,LocalRepository repository) {
+    public MyViewModel(@NonNull Application application, LocalRepository repository) {
         super(application);
         this.repository=repository;
 

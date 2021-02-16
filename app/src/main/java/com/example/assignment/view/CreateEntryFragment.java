@@ -44,21 +44,18 @@ import com.example.assignment.databinding.Tab2FragmentBinding;
 import com.example.assignment.utils.SaveBitmap;
 import com.example.assignment.model.User;
 import com.example.assignment.view.activities.MainActivity;
-import com.example.assignment.viewmodel.Tab1ViewModel;
+import com.example.assignment.viewmodel.MyViewModel;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import static android.app.Activity.RESULT_CANCELED;
 
-public class Tab2 extends Fragment {
+public class CreateEntryFragment extends Fragment {
     MyFragmentAdapter myFragmentAdapter;
 
 
-    private Tab1ViewModel mViewModel;
+    private MyViewModel mMyViewModel;
    // @BindView(R.id.image_view_user)
     ImageView userImage;
 
@@ -115,21 +112,21 @@ public class Tab2 extends Fragment {
 
     SaveBitmap saveBitmap;
 
-    public Tab2() {
+    public CreateEntryFragment() {
     }
 
     ;
 
-    public static Tab2 Tab2Instance(int id) {
-        Tab2 tab2 = new Tab2();
+    public static CreateEntryFragment Tab2Instance(int id) {
+        CreateEntryFragment createEntryFragment = new CreateEntryFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("ID", id);
-        tab2.setArguments(bundle);
-        return tab2;
+        createEntryFragment.setArguments(bundle);
+        return createEntryFragment;
     }
 
-    public static Tab2 newInstance() {
-        return new Tab2();
+    public static CreateEntryFragment newInstance() {
+        return new CreateEntryFragment();
     }
 
     @Override
@@ -181,7 +178,7 @@ public class Tab2 extends Fragment {
 
         enlargeImage= view.findViewById(R.id.enlarge_image);
         datePick=view.findViewById(R.id.date_picker);
-        mViewModel= ViewModelProviders.of(getActivity()).get(Tab1ViewModel.class);
+        mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
 
         if (getArguments() != null) {
 
@@ -197,15 +194,15 @@ public class Tab2 extends Fragment {
             userPhoneNumber2.setEnabled(false);
             datePick.setVisibility(View.GONE);
             userName.setEnabled(false);
-            mViewModel.fetchDetailsFromDatabase(id);
-            mViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
+            mMyViewModel.fetchDetailsFromDatabase(id);
+            mMyViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
                 binding.setUser(user);
               /*  userImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         enlargeImage.setVisibility(View.VISIBLE);
                         if (user.getImage() != null) {
-                            Glide.with(Tab2.this).load(Uri.parse(user.getImage()))
+                            Glide.with(CreateEntryFragment.this).load(Uri.parse(user.getImage()))
                                     .placeholder(R.drawable.ic_baseline_person_24)
                                     .into(enlargeImage);
                         } else {
@@ -291,13 +288,13 @@ public class Tab2 extends Fragment {
                     }
                     String birthday =userBirthDay.getText().toString();
                     if (ProfilePicUri==null){
-                        mViewModel.getUser().observe(getActivity(),user -> {
+                        mMyViewModel.getUser().observe(getActivity(), user -> {
                             ProfilePicUri=user.getImage();
                         });
                     }
 
 
-                    mViewModel.updateUser(name,birthday,phoneNumber,phoneNumber1,phoneNumber2,ProfilePicUri,id);
+                    mMyViewModel.updateUser(name,birthday,phoneNumber,phoneNumber1,phoneNumber2,ProfilePicUri,id);
                     ((MainActivity) getActivity()).switchToTab1fragment();
 
 
@@ -310,9 +307,9 @@ public class Tab2 extends Fragment {
 
         }
 
-        mViewModel.fetchDetailsFromDatabase(id);
+        mMyViewModel.fetchDetailsFromDatabase(id);
 
-        mViewModel.getUser().observe(getViewLifecycleOwner(),user -> {
+        mMyViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -418,7 +415,7 @@ public class Tab2 extends Fragment {
                     Log.d("Phone", phoneNumber1);
                     Log.d("Phone", phoneNumber2);
                     Log.d("DATE1", String.valueOf(new Date()));
-                    mViewModel.saveToDatabase(user);
+                    mMyViewModel.saveToDatabase(user);
                     Toast.makeText(getContext(), "Successfully Registered", Toast.LENGTH_SHORT).show();
                     clearFields();
 
@@ -572,6 +569,6 @@ public class Tab2 extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewModel = new ViewModelProvider(getActivity()).get(Tab1ViewModel.class);
+        mMyViewModel = new ViewModelProvider(getActivity()).get(MyViewModel.class);
     }
 }

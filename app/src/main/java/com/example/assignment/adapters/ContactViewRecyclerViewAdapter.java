@@ -13,13 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.assignment.R;
-import com.example.assignment.model.SingleContact;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactViewRecyclerViewAdapter extends RecyclerView.Adapter<ContactViewRecyclerViewAdapter.MyViewHolder> {
-  //  private ArrayList<SingleContact> singlePersonContactList;
+
     private ArrayList<String> singlePersonContactList;
     private ArrayList<String> singlePersonContactTypeList;
 

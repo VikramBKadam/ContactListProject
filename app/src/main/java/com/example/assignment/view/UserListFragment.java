@@ -6,7 +6,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,20 +28,17 @@ import com.example.assignment.R;
 import com.example.assignment.adapters.UserListAdapter;
 import com.example.assignment.interfaces.ItemClickListener;
 import com.example.assignment.model.User;
-import com.example.assignment.view.activities.DetailActivity;
-import com.example.assignment.view.activities.EditActivity;
 import com.example.assignment.view.activities.MainActivity;
-import com.example.assignment.viewmodel.Tab1ViewModel;
+import com.example.assignment.viewmodel.MyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Tab1 extends Fragment implements ItemClickListener {
+public class UserListFragment extends Fragment implements ItemClickListener {
 
-    private Tab1ViewModel mViewModel;
+    private MyViewModel mMyViewModel;
    // @BindView(R.id.user_recycler_view)
     RecyclerView UserList;
     LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
@@ -55,8 +51,8 @@ public class Tab1 extends Fragment implements ItemClickListener {
     private UserListAdapter userListAdapter = new UserListAdapter(this);
 
 
-    public static Tab1 newInstance() {
-        return new Tab1();
+    public static UserListFragment newInstance() {
+        return new UserListFragment();
     }
 
     @Override
@@ -73,8 +69,8 @@ public class Tab1 extends Fragment implements ItemClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewModel= ViewModelProviders.of(getActivity()).get(Tab1ViewModel.class);
-        mViewModel.fetchDataFromDatabase();
+        mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
+        mMyViewModel.fetchDataFromDatabase();
        // linearLayoutManager.setReverseLayout(true);
        // linearLayoutManager.setStackFromEnd(true);
         UserList =(RecyclerView)view.findViewById(R.id.user_recycler_view);
@@ -83,9 +79,9 @@ public class Tab1 extends Fragment implements ItemClickListener {
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(UserList);
 
         UserList.setAdapter(userListAdapter);
-        mViewModel.setIsMultiSelect(false);
+        mMyViewModel.setIsMultiSelect(false);
 
-        mViewModel = new ViewModelProvider(getActivity()).get(Tab1ViewModel.class);
+        mMyViewModel = new ViewModelProvider(getActivity()).get(MyViewModel.class);
 
         observeQueryString();
         observeUsersDataList();
@@ -94,7 +90,7 @@ public class Tab1 extends Fragment implements ItemClickListener {
     }
 
     private void observeMultiSelectStatus() {
-        mViewModel.getIsMultiSelectOn().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        mMyViewModel.getIsMultiSelectOn().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 multiSelectStatus = aBoolean;
@@ -102,7 +98,7 @@ public class Tab1 extends Fragment implements ItemClickListener {
         });
     }
     private void observeQueryString() {
-        mViewModel.getQueryString().observe(getViewLifecycleOwner(), new Observer<String>() {
+        mMyViewModel.getQueryString().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String query) {
                 Log.d("TAG", "Inside Tab1Fragment: " + query);
@@ -132,9 +128,9 @@ public class Tab1 extends Fragment implements ItemClickListener {
     private void queryChatList(String query) {
         query = "%" + query + "%";
 
-        mViewModel.queryInit(query);
+        mMyViewModel.queryInit(query);
 
-        mViewModel.queriedUserList.observe(this, new Observer<PagedList<User>>() {
+        mMyViewModel.queriedUserList.observe(this, new Observer<PagedList<User>>() {
             @Override
             public void onChanged(PagedList<User> users) {
                 userListAdapter.submitList(users);
@@ -160,7 +156,7 @@ public class Tab1 extends Fragment implements ItemClickListener {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             userListAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
-            mViewModel.userList.observe(getActivity(), users -> {
+            mMyViewModel.userList.observe(getActivity(), users -> {
                 if(users != null  && users.size() > 0 ) {
                    // userList=new ArrayList<>();
                   //  userList.addAll(users);
@@ -188,7 +184,7 @@ public class Tab1 extends Fragment implements ItemClickListener {
 
 
                         }  else if(options[item].equals("Delete")){
-                            mViewModel.deleteUserFromDatabase(user.getId());
+                            mMyViewModel.deleteUserFromDatabase(user.getId());
 
                         } else if (options[item].equals("Cancel")) {
                             dialog.dismiss();
@@ -213,7 +209,7 @@ public class Tab1 extends Fragment implements ItemClickListener {
 
 
     private void observeUsersDataList() {
-       mViewModel.userList.observe(getViewLifecycleOwner(), users ->
+       mMyViewModel.userList.observe(getViewLifecycleOwner(), users ->
 
                userListAdapter.submitList(users));
 
@@ -233,14 +229,14 @@ public class Tab1 extends Fragment implements ItemClickListener {
                 deleteUserList.remove(user);
                 view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_200));
                 if(deleteUserList.size()==0){
-                    mViewModel.setIsMultiSelect(false);
+                    mMyViewModel.setIsMultiSelect(false);
                 }
             }
 
         } else {
             /*ViewPager viewPager = getActivity().findViewById(R.id.view_pager);
             viewPager.getCurrentItem();*/
-           /* Tab2 tab2=Tab2.newInstance();*/
+           /* CreateEntryFragment tab2=CreateEntryFragment.newInstance();*/
             RelativeLayout relativeLayout=view.findViewById(R.id.tab1fragment);
             if (relativeLayout!=null){
                 relativeLayout.setVisibility(View.GONE);
@@ -266,7 +262,7 @@ public class Tab1 extends Fragment implements ItemClickListener {
         view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.purple_500));
         deleteUserList.add(user);
         Log.d("TAG", "LongItemClick: " + index);
-        mViewModel.setIsMultiSelect(true);
+        mMyViewModel.setIsMultiSelect(true);
 
     }
     @Override
@@ -275,11 +271,11 @@ public class Tab1 extends Fragment implements ItemClickListener {
         if (item.getItemId() == R.id.multi_select_delete_menu) {
 
             for (User user :deleteUserList) {
-                mViewModel.deleteUserFromDatabase(user.getId());
+                mMyViewModel.deleteUserFromDatabase(user.getId());
             }
 
             deleteUserList.clear();
-            mViewModel.setIsMultiSelect(false);
+            mMyViewModel.setIsMultiSelect(false);
         }
         return super.onOptionsItemSelected(item);
     }
