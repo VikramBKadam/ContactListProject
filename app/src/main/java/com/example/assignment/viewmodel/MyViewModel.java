@@ -5,8 +5,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
@@ -16,7 +18,9 @@ import com.example.assignment.model.Contact;
 import com.example.assignment.model.User;
 import com.example.assignment.repository.LocalRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -30,6 +34,8 @@ import io.reactivex.schedulers.Schedulers;
 @HiltViewModel
 public class MyViewModel extends AndroidViewModel {
     public LiveData<PagedList<Contact>> contactList;
+
+    public LiveData<List<Contact>>ListOfContacts;
     public LiveData<PagedList<Contact>> queryContactList;
     SyncNativeContacts syncNativeContacts;
     public final static String TAG = "TAG";
@@ -151,6 +157,28 @@ public class MyViewModel extends AndroidViewModel {
 
     }
 
+    public  void deleteContact(String contact_name,List<String>numberList){
+        repository.deleteFromContacts(contact_name,numberList).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+
+
+                    }
+                    @Override
+                    public void onComplete() {
+
+
+                    }
+                    @Override
+                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
+
+    }
+
    public void deleteUserFromDatabase(int id){
         repository.deleteUser(id).subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
@@ -244,6 +272,67 @@ public class MyViewModel extends AndroidViewModel {
 
         queryContactList = new LivePagedListBuilder<>(repository.getQueryContact(query), config).build();
     }
+
+    public void deltaContactSync() {
+        List<Contact>deltaList=new ArrayList<>();
+        List<Contact> contactListInDb = new ArrayList<>();
+        ListOfContacts=repository.getListofContacts();
+
+       ListOfContacts.observeForever(new Observer<List<Contact>>() {
+           @Override
+           public void onChanged(List<Contact> contacts) {
+               contactListInDb.addAll(contacts);
+           }
+       });
+
+
+
+        syncNativeContacts = new SyncNativeContacts(getApplication());
+        syncNativeContacts.getContactArrayList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Contact>>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+                        Log.e("Delta", "onSubscribe: Inside delta sync  "   );
+                    }
+
+                    @Override
+                    public void onSuccess(@io.reactivex.annotations.NonNull List<Contact> contactList) {
+                        Log.e("Delta", "onSuccess: Inside delta sync   -->>  "+contactList.size()   );
+                        settotalContact(contactList.size());
+                        Log.e("Delta", "onSuccess: ContactListindb size   -->>  "+contactListInDb.size()   );
+                         if (contactList.size()>contactListInDb.size()){
+                             contactList.removeAll(contactListInDb);
+                             Log.e("Delta", "onSuccess: contactList -contactlistindb size   -->>  "+contactList.size()   );
+                             deltaList.addAll(contactList);
+                             Log.e("Delta", "onSuccess: Size of delta list   -->>  "+deltaList.size()   );
+                             repository.addListOfContact(deltaList);
+                         }
+                         if (contactListInDb.size()>contactList.size()){
+                             contactListInDb.removeAll(contactList);
+                             Log.e("Delta", "onSuccess: ContactListindb -contactlist size   -->>  "+contactListInDb.size()   );
+                             deltaList.addAll(contactListInDb);
+
+                             for(Contact contact:deltaList){
+                                 deleteContact(contact.getName(),contact.getNumber());
+
+                             }
+                         }
+
+
+
+
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                        Log.e(TAG, "onError: Inside complete sync error ->> "+e.getMessage()   );
+                    }
+                });
+    }
+
+
 
     public void completeContactSync() {
         syncNativeContacts = new SyncNativeContacts(getApplication());

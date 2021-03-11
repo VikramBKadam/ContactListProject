@@ -1,5 +1,6 @@
 package com.example.assignment.repository;
 
+import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -24,6 +25,14 @@ public interface ContactDao {
 
     @Query("SELECT * FROM ContactDB WHERE _id = :Id")
     Single<Contact> getContactById(String Id);
+
+    @Query("select * from contactdb order by name asc")
+    LiveData<List<Contact>> getAllListContacts();
+
+    @Query("Delete From contactdb where name=:contact_name and number=:numberList")
+    Completable DeleteFromContact(String contact_name,List<String>numberList);
+
+
 
     @Query("select * from contactdb order by name asc")
     DataSource.Factory<Integer, Contact> getAllContacts();

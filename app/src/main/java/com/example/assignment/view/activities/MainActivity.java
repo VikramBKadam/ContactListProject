@@ -55,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
     AndroidContactsChangeListener.IChangeListener contactChangeListener = new AndroidContactsChangeListener.IChangeListener() {
         @Override
         public void onContactsChanged() {
-            fragmentMyViewModel.completeContactSync();
+          // fragmentMyViewModel.completeContactSync();
+
+            fragmentMyViewModel.deltaContactSync();
         }
     };
 

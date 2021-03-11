@@ -38,6 +38,7 @@ import butterknife.ButterKnife;
 
 public class UserListFragment extends Fragment implements ItemClickListener {
 
+
     private MyViewModel mMyViewModel;
    // @BindView(R.id.user_recycler_view)
     RecyclerView UserList;
