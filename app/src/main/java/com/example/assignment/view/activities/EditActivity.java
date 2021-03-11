@@ -1,4 +1,4 @@
-package com.example.assignment.view;
+package com.example.assignment.view.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,10 +30,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment.R;
-import com.example.assignment.helper.SaveBitmap;
-import com.example.assignment.helper.UriFromBitmap;
-import com.example.assignment.model.User;
-import com.example.assignment.viewmodel.Tab1ViewModel;
+import com.example.assignment.utils.SaveBitmap;
+import com.example.assignment.viewmodel.MyViewModel;
 
 import java.util.Calendar;
 
@@ -41,11 +39,11 @@ public class EditActivity extends AppCompatActivity {
     String ProfilePicUri ;
     private final int REQUEST_CODE_CAMERA = 0;
     private final int REQUEST_CODE_GALLERY = 1;
-    UriFromBitmap uriFromBitmap;
+
 
 
     Toolbar toolbar;
-    Tab1ViewModel viewModel;
+    MyViewModel myViewModel;
 
     String id;
 
@@ -73,7 +71,7 @@ public class EditActivity extends AppCompatActivity {
         button=findViewById(R.id.editButton);
         changeProfilePic=findViewById(R.id.buttonChangeProfilePic);
 
-        viewModel= ViewModelProviders.of(this).get(Tab1ViewModel.class);
+        myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
 
         toolbar=findViewById(R.id.tool_bar);
         toolbar.setTitle("Edit User Details");
@@ -87,8 +85,8 @@ public class EditActivity extends AppCompatActivity {
         });
 
         id=getIntent().getStringExtra("ID");
-        viewModel.fetchDetailsFromDatabase(Integer.parseInt(id));
-        viewModel.getUser().observe(this,user-> {
+        myViewModel.fetchDetailsFromDatabase(Integer.parseInt(id));
+        myViewModel.getUser().observe(this, user-> {
             textViewName.setText(user.getName());
             textViewPhone.setText(user.getPhoneNumber());
             textViewBirthday.setText(user.getBirthday());
@@ -140,13 +138,13 @@ public class EditActivity extends AppCompatActivity {
                     String birthday =textViewBirthday.getText().toString();
                    // User user =new User(name,phoneNumber,birthday,"uri");
                     if (ProfilePicUri==null){
-                        viewModel.getUser().observe(EditActivity.this,user -> {
+                        myViewModel.getUser().observe(EditActivity.this, user -> {
                             ProfilePicUri=user.getImage();
                         });
                     }
-                    viewModel.updateUser(name,birthday,phoneNumber,ProfilePicUri,Integer.parseInt(id));
+                  //  myViewModel.updateUser(name,birthday,phoneNumber,ProfilePicUri,Integer.parseInt(id));
                    Toast.makeText(EditActivity.this, "Successfully Edited", Toast.LENGTH_SHORT).show();
-                    Intent intent =new Intent(EditActivity.this,MainActivity.class);
+                    Intent intent =new Intent(EditActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
             });

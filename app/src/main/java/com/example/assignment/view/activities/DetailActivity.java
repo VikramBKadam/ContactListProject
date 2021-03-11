@@ -1,28 +1,35 @@
-package com.example.assignment.view;
+package com.example.assignment.view.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment.R;
-import com.example.assignment.viewmodel.Tab1ViewModel;
+import com.example.assignment.viewmodel.MyViewModel;
 
 public class DetailActivity extends AppCompatActivity {
-    Tab1ViewModel viewModel;
+    MyViewModel myViewModel;
     Toolbar toolbar;
 
     String id;
@@ -47,7 +54,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
 
-        viewModel= ViewModelProviders.of(this).get(Tab1ViewModel.class);
+        myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
 
         toolbar=findViewById(R.id.tool_bar);
         toolbar.setTitle("User Details");
@@ -63,8 +70,8 @@ public class DetailActivity extends AppCompatActivity {
 
 
         id=getIntent().getStringExtra("ID");
-        viewModel.fetchDetailsFromDatabase(Integer.parseInt(id));
-        viewModel.getUser().observe(this,user -> {
+        myViewModel.fetchDetailsFromDatabase(Integer.parseInt(id));
+        myViewModel.getUser().observe(this, user -> {
             if(user.getImage()!=null){
                 Glide.with(this).load(Uri.parse(user.getImage()))
                         .placeholder(R.drawable.ic_baseline_person_24)
@@ -75,7 +82,42 @@ public class DetailActivity extends AppCompatActivity {
             textViewName.setText("Name: "+user.getName());
             textViewPhone.setText("Mobile: "+user.getPhoneNumber());
             textViewBirthday.setText("BirthDate: "+user.getBirthday());
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog builder = new Dialog(DetailActivity.this);
+                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    builder.getWindow().setBackgroundDrawable(
+                            new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+
+                        }
+            });
+
+
+                    ImageView imageView1 = new ImageView(DetailActivity.this);
+                    if(user.getImage()!=null){
+                        Log.d("TAG", "onTouch: "+user.getImage());
+                        Glide.with(DetailActivity.this).load(Uri.parse(user.getImage()))
+                                .placeholder(R.drawable.ic_baseline_person_24)
+                                .into(imageView1);
+                    }else {imageView1.setImageResource(R.drawable.ic_baseline_person_24);}
+
+                    builder.addContentView(imageView1, new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT));
+                    builder.show();
+
+
+                }
+            });
+
         });
+
+
+
 
 
     }
@@ -93,9 +135,9 @@ public class DetailActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.delete:
 
-                viewModel.deleteUserFromDatabase(Integer.parseInt(id));
+                myViewModel.deleteUserFromDatabase(Integer.parseInt(id));
                 finish();
-                 intent =new Intent(this,MainActivity.class);
+                 intent =new Intent(this, MainActivity.class);
                 startActivity(intent);
 
                 Toast.makeText(this, "Delete Clicked", Toast.LENGTH_SHORT).show();
@@ -108,7 +150,7 @@ public class DetailActivity extends AppCompatActivity {
                 editTextViewPhone.setVisibility(View.VISIBLE);
                 editTextViewBirthday.setVisibility(View.VISIBLE);*/
 
-                  intent =new Intent(this,EditActivity.class);
+                  intent =new Intent(this, EditActivity.class);
 
                 id=getIntent().getStringExtra("ID");
 
