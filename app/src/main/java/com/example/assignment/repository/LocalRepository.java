@@ -2,6 +2,7 @@ package com.example.assignment.repository;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 
 import com.example.assignment.model.Contact;
@@ -72,6 +73,12 @@ public class LocalRepository {
 
     public Completable addListOfContact(List<Contact> contactList) {
         return contactDao.addListOfContact(contactList);
+    }
+    public LiveData<List<Contact>>getListofContacts(){
+        return contactDao.getAllListContacts();
+    }
+    public  Completable deleteFromContacts(String contact_name,List<String>numberList){
+        return contactDao.DeleteFromContact(contact_name,numberList);
     }
 
     public DataSource.Factory<Integer, Contact> getAllContacts() {

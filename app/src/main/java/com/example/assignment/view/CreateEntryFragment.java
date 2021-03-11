@@ -120,6 +120,7 @@ public class CreateEntryFragment extends Fragment {
     public static CreateEntryFragment Tab2Instance(int id) {
         CreateEntryFragment createEntryFragment = new CreateEntryFragment();
         Bundle bundle = new Bundle();
+
         bundle.putInt("ID", id);
         createEntryFragment.setArguments(bundle);
         return createEntryFragment;
