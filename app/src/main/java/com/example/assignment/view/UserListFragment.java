@@ -72,8 +72,8 @@ public class UserListFragment extends Fragment implements ItemClickListener {
         super.onViewCreated(view, savedInstanceState);
         mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
         mMyViewModel.fetchDataFromDatabase();
-       // linearLayoutManager.setReverseLayout(true);
-       // linearLayoutManager.setStackFromEnd(true);
+//        linearLayoutManager.setReverseLayout(true);
+//        linearLayoutManager.setStackFromEnd(true);
         UserList =(RecyclerView)view.findViewById(R.id.user_recycler_view);
 
         UserList.setLayoutManager(linearLayoutManager);
