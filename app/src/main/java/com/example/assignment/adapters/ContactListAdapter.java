@@ -81,7 +81,7 @@ public class ContactListAdapter extends PagedListAdapter<Contact, ContactListAda
             Log.d("TAGc", "onClick in Contact adapter called: " +v.getId());
             if (contactClickListener != null)
                 contactClickListener.onContactClicked(v, getItem(getAdapterPosition()));
-
+//Change commit msg checked
         }
     }
 }
