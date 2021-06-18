@@ -3,7 +3,7 @@ APP functionalities:<br/>
 1. Reading native contacts from phone saving it in local database and showing it in Recycler view.<br/>
 2. Creating Dummy contacts with general information (name, number,photos ,etc.)saving it in local database and showing those in Recycler view.
 
-Concept Used:<br/>
+Concepts Used:<br/>
 1. Language - Java.<br/>
 2. Architecture - MVVM.<br/>
 3. Dependancy injection using Dagger Hilt.<br/>
